@@ -101,8 +101,8 @@ It was actually so complicated that it inspired funny paper names:
 3. [An Even Simpler Linear-Time Algorithm for Verifying Minimum Spanning Trees,
    2009 Hagerup](https://link.springer.com/chapter/10.1007/978-3-642-11409-0_16)
 
-I am forever grateful to Hagerup, which is the only author to provide an
-implementation of their algorithm in this list. After a lot of time banging my
+I am forever grateful to Hagerup, which is the only author that included his
+implementation as part of the paper. After a lot of time banging my
 head against the wall, I was able to find a really subtle typo in the code he
 provided. A beautiful case of finding the needle in the haystack.
 
