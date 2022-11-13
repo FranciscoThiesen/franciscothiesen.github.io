@@ -4,12 +4,18 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+Brazilian born Computer Scientist, currently living in Seattle.
+Some of my interests are (in no particular order):
+- Algorithms (Specially the fast ones)
+- Data Structures
+- C++
+- Books
+- Discrete Math
+- Snowboard
+- Economics
+- Investing
+- Wines from Argentina and California
+- Food
 
 ### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+[franciscogthiesen@gmail.com](mailto:franciscogthiesen@gmail.com)
