@@ -29,6 +29,10 @@ vertices in the graph
 - [Kruskal](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
 - [Prim](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
 
+| ![_config.yml]({{ site.baseurl }}/images/boruvka.gif) |
+|:--:|
+| Cute [Animation of Borůvka algorithm](https://commons.wikimedia.org/wiki/File:Boruvka%27s_algorithm_(Sollin%27s_algorithm)_Anim.gif). |  
+
 An algorithm with expected complexity of $$O(m + n)$$ belongs to a complexity class
 that grows slower than the class offered by the classical algorithms listed
 above, so for graphs sufficiently large $$KKT$$ algorithm should come in handy. At this
@@ -37,14 +41,13 @@ algorithms.
 
 ## Let's benchmark it!
 Benchmarks are nice, but there was not going to be easy...
-As of early 2020, there were no publicly available implementations of the
+As of early 2020, I couldn't find a working implementation of the
 $$KKT$$ algorithm that I could use for benchmarking purposes.
 
 At this point I had 2 reasonable options:
 1. Go find some other topic for my undergrad thesis.
-2. Be brave and implement this not-so-trivial $$KKT$$ algorithm and make it the
-   first publicly available implementation. This can work as a thesis + satisfy
-   my personal curiosity + hopefully contribute a working implementation to
+2. Be brave and implement this not-so-trivial $$KKT$$ algorithm and make a publicly available implementation. 
+This can work as a thesis + satisfy my personal curiosity + hopefully contribute a working implementation to
    society.
 
 As you have probably guessed (given the title of this post), I went for option 2.
@@ -78,10 +81,10 @@ by all the 3 classical algorithms.
 It was something terribly hard to debug, because I couldn't reproduce the issue
 with graphs of a smaller size. As someone who has made a lot of implementation
 mistakes in the past, my usual instict is to assume the error is in some
-implementation mistake I made. This reminds me of the time when Rafael Nadal
-played with a broken racquet when he was 15, because he was so used to taking
-responsibility for his losses that the idea that the racquet was broken didn't
-even cross his mind. [Nadal History here](https://youtu.be/FXL2G1p-EDw?t=521).
+implementation mistake I made. This reminds me of the time when [Rafael Nadal
+played with a broken racket](https://youtu.be/FXL2G1p-EDw?t=521) when he was 15, because he was so used to taking
+responsibility for his losses that the idea that the racket was broken didn't
+even cross his mind. 
 
 After scrutinizing the code for a long time and
 adding A LOT of print statements, I started suspecting that the error might not
@@ -152,28 +155,30 @@ implementation, but I don't believe it will make the algorithm better than the
 classical alternatives for real world examples.
 - The analysis used estimates of the implementation runtime complexity, this will 
 change if a different set of tests are used for benchmarking.
-- At least we now hava publicly available implementation of expected linear time
-algorithm to finding minimum spanning trees! [Repo is here](https://github.com/FranciscoThiesen/karger-klein-tarjan)
+- At least we now have a [publicly available implementation](https://github.com/FranciscoThiesen/karger-klein-tarjan)
+ of expected linear time algorithm to finding minimum spanning trees.
 - Be aware that when you propose a complicated algorithm, you might cause a
 student to try to implement it 10/20 years later (:
-- If possible, please distribute the implementations of your complex algorithms (if you
-  have one?)
 
 ## Credits
-I want to thank all the amazing algorithms professors that I had in university,
+I want to thank all the amazing algorithms professors that I had in life,
   who taught me with great enthusiasm and also offered several suggestions on how to improve
-  my thesis. 
+  my thesis/this blog post. 
 - [Marcus Poggi](http://www-di.inf.puc-rio.br/~poggi//index.html)
 - [Eduardo Laber](https://www-di.inf.puc-rio.br/~laber/)
 - [Marco Molinaro](https://www-di.inf.puc-rio.br/~mmolinaro/)
+- [Daniel Fleischman](https://www.linkedin.com/in/danielfleischman/)
 
-"If I have seen any further, it is by standing in the shoulder of giants." -
-Isaac Netwon
+## Unanswered questions / additional thoughts
+- Is it worth the time trying to reduce the constant of my $$KKT$$
+implementation? A significant speed-up could make this somewhat useful for
+really large (but real-world) instances.
+- A breakdown of the time spent in each function of $$KKT$$ implementation would
+be interesting to see.
+- Is there a class of graphs in which $$KKT$$ is more "competitive"?
 
 ## Relevant links
 - [My final thesis report (portuguese)](https://github.com/FranciscoThiesen/karger-klein-tarjan/blob/master/relatorio_final.pdf)
-- [Github repo with instructions so that you are able to reproduce the
-benchmark + tests](https://github.com/FranciscoThiesen/karger-klein-tarjan)
 
 ### Suggestions
 I am always open to suggestions and/or feedback, if you have something to say
