@@ -19,7 +19,7 @@ I was looking into randomized algorithms and was really
 surprised to find out that there was an [expected linear time complexity algorithm for the Minimum
 Spanning Tree problem](https://en.wikipedia.org/wiki/Expected_linear_time_MST_algorithm). 
 The authors are Karger, Klein and Tarjan and from now on I'll refer to it as
-$$KKT$$.
+$$KKT$$, which usually used to abbreviate a completely different thing [see Karush-Kuhn-Tucker](https://en.wikipedia.org/wiki/Karush%E2%80%93Kuhn%E2%80%93Tucker_conditions).
 
 In my algorithms class and also during my studies for the [ICPC](https://icpc.global/) I had only
 stumbled upon 3 different ways of solving the problems, with a complexity of
