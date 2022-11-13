@@ -163,8 +163,8 @@ student to try to implement it 10/20 years later (:
 
 ## Credits
 I want to thank all the amazing algorithms professors that I had in university,
-  who taught me with enthusiasm and also offered suggestions on how to improve
-  my thesis. is by standing in the shoulders of
+  who taught me with great enthusiasm and also offered several suggestions on how to improve
+  my thesis. 
 - [Marcus Poggi](http://www-di.inf.puc-rio.br/~poggi//index.html)
 - [Eduardo Laber](https://www-di.inf.puc-rio.br/~laber/)
 - [Marco Molinaro](https://www-di.inf.puc-rio.br/~mmolinaro/)
@@ -176,3 +176,7 @@ Isaac Netwon
 - [My final thesis report (portuguese)](https://github.com/FranciscoThiesen/karger-klein-tarjan/blob/master/relatorio_final.pdf)
 - [Github repo with instructions so that you are able to reproduce the
 benchmark + tests](https://github.com/FranciscoThiesen/karger-klein-tarjan)
+
+### Suggestions
+I am always open to suggestions and/or feedback, if you have something to say
+please send me an [e-mail](mailto:franciscogthiesen@gmail.com)
