@@ -92,7 +92,7 @@ be on me this time. How could that be?
 Well, $$KKT$$ leverages another complicated algorithm as a fundamental step.
 This step basically needs to check if a certain tree $$T$$ is a minimum spanning
 tree for a certain graph, which is not something specially hard. The hard part
-is that needs to have $$O(m + n)$$ complexity, wh, which is far from straightforward.
+is that needs to have $$O(m + n)$$ complexity and that makes the implementation much harder.
 
 It was actually so complicated that it inspired funny paper names:
 1. [Linear Verification For Spanning Trees, 1984 Komlós](https://www.researchgate.net/publication/3770673_Linear_Verification_For_Spanning_Trees)
