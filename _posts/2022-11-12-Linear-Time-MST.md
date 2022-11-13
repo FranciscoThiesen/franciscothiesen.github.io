@@ -167,7 +167,6 @@ I want to thank all the amazing algorithms professors that I had in life,
 - [Marcus Poggi](http://www-di.inf.puc-rio.br/~poggi//index.html)
 - [Eduardo Laber](https://www-di.inf.puc-rio.br/~laber/)
 - [Marco Molinaro](https://www-di.inf.puc-rio.br/~mmolinaro/)
-- [Daniel Fleischman](https://www.linkedin.com/in/danielfleischman/)
 
 ## Unanswered questions / additional thoughts
 - Is it worth the time trying to reduce the constant of my $$KKT$$
