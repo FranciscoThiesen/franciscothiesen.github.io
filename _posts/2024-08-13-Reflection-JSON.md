@@ -5,8 +5,6 @@ title: Reflection-based JSON in C++ at Gigabytes per Second
 tags: Modern C++, JSON, Serialization, Reflection, C++26, Performance
 ---
 
-# Reflection-based JSON in C++ at Gigabytes per Second
-
 JSON (JavaScript Object Notation) is a popular format for storing and transmitting data. It uses human-readable text to represent structured data in the form of attribute–value pairs and arrays. E.g., `{"age":5, "name":"Daniel", toys:["wooden dog", "little car"]}`.
 Ingesting and producing JSON documents can be a performance bottleneck.
 
