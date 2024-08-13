@@ -51,15 +51,15 @@ a bit of work, writing custom code. E.g., in the popular JSON for Modern C++ ([n
 
 {% raw %}
 ```cpp
-    void to_json(json& j, const person& p) {
-        j = json{{"name", p.name}, {"address", p.address}, {"age", p.age}};
-    }
+void to_json(json& j, const person& p) {
+    j = json{{"name", p.name}, {"address", p.address}, {"age", p.age}};
+}
 
-    void from_json(const json& j, person& p) {
-        j.at("name").get_to(p.name);
-        j.at("address").get_to(p.address);
-        j.at("age").get_to(p.age);
-    }
+void from_json(const json& j, person& p) {
+    j.at("name").get_to(p.name);
+    j.at("address").get_to(p.address);
+    j.at("age").get_to(p.age);
+}
 ```
 {% endraw %}
 
