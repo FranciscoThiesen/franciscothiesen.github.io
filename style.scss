@@ -120,6 +120,32 @@ img {
   color: $gray;
 }
 
+/* Basic table styling similar to GitHub's Markdown */
+table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+th {
+    background-color: #f6f8fa;
+    border: 1px solid #dfe2e5;
+    padding: 6px 13px;
+    text-align: left;
+    font-weight: bold;
+}
+
+td {
+    border: 1px solid #dfe2e5;
+    padding: 6px 13px;
+}
+
+tr:nth-child(2n) {
+    background-color: #f6f8fa;
+}
+
+
 // Specify the color of the selection
 ::-moz-selection {
   color: $black;
