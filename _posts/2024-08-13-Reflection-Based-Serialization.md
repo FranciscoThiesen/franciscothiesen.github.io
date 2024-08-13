@@ -128,7 +128,7 @@ Intel Ice Lake:
 | Twitter Serialization    | nlohmann/json        | 110          |          |
 |                          | our C++26 serializer | 1800         |    16×   |
 | Artificial Serialization | nlohmann/json        | 50           |          |
-|                          | our C++26 serializer   | 1400         |   28×    |
+|                          | our C++26 serializer | 1400         |    28×   |
 
 
 Our benchmark showed that we are roughly 20× faster than [nlohmann/json](https://github.com/nlohmann/json). This was achieved by combining the new reflection capabilities with [some bit twiddling tricks](https://lemire.me/blog/2024/05/31/quickly-checking-whether-a-string-needs-escaping/) and a [string_builder class](https://github.com/simdjson/experimental_json_builder/blob/main/src/string_builder.hpp) to help minimize the overhead of memory allocations.
