@@ -49,6 +49,7 @@ Similarly, going from the C++ structures to JSON can be made
 convenient, but typically only after the programmer has done
 a bit of work, writing custom code. E.g., in the popular JSON for Modern C++ ([nlohmann/json](https://github.com/nlohmann/json)) library, we need to provide glue functions:
 
+{% raw %}
 ```cpp
     void to_json(json& j, const person& p) {
         j = json{{"name", p.name}, {"address", p.address}, {"age", p.age}};
@@ -60,6 +61,7 @@ a bit of work, writing custom code. E.g., in the popular JSON for Modern C++ ([n
         j.at("age").get_to(p.age);
     }
 ```
+{% endraw %}
 
 We know that this extra effort (writing data-structure aware code) is unnecessary because other programming languages (Java, C#, Zig, Rust, Python, etc.) allow us to 'magically'
 serialize and deserialize with almost no specialized code.
