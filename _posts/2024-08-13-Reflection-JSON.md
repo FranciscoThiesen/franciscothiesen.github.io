@@ -1,6 +1,6 @@
 ---
 layout: post
-usemathjax: false
+usemathjax: true
 title: Reflection-based JSON in C++ at Gigabytes per Second
 tags: Modern C++, JSON, Serialization, Reflection, C++26, Performance
 ---
