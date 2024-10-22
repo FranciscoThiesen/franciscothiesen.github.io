@@ -1,6 +1,6 @@
 ---
 layout: post
-usemathjax: false
+usemathjax: true
 title: Reflection-based JSON in C++ at Gigabytes per Second
 tags: Modern C++, JSON, Serialization, Reflection, C++26, Performance
 ---
@@ -49,17 +49,19 @@ Similarly, going from the C++ structures to JSON can be made
 convenient, but typically only after the programmer has done
 a bit of work, writing custom code. E.g., in the popular JSON for Modern C++ ([nlohmann/json](https://github.com/nlohmann/json)) library, we need to provide glue functions:
 
+{% raw %}
 ```cpp
-    void to_json(json& j, const person& p) {
-        j = json{{"name", p.name}, {"address", p.address}, {"age", p.age}};
-    }
+void to_json(json& j, const person& p) {
+    j = json{{"name", p.name}, {"address", p.address}, {"age", p.age}};
+}
 
-    void from_json(const json& j, person& p) {
-        j.at("name").get_to(p.name);
-        j.at("address").get_to(p.address);
-        j.at("age").get_to(p.age);
-    }
+void from_json(const json& j, person& p) {
+    j.at("name").get_to(p.name);
+    j.at("address").get_to(p.address);
+    j.at("age").get_to(p.age);
+}
 ```
+{% endraw %}
 
 We know that this extra effort (writing data-structure aware code) is unnecessary because other programming languages (Java, C#, Zig, Rust, Python, etc.) allow us to 'magically'
 serialize and deserialize with almost no specialized code.
@@ -126,7 +128,7 @@ Intel Ice Lake:
 | Twitter Serialization    | nlohmann/json        | 110          |          |
 |                          | our C++26 serializer | 1800         |    16×   |
 | Artificial Serialization | nlohmann/json        | 50           |          |
-|                          | our C++26 serializer   | 1400         |   28×    |
+|                          | our C++26 serializer | 1400         |    28×   |
 
 
 Our benchmark showed that we are roughly 20× faster than [nlohmann/json](https://github.com/nlohmann/json). This was achieved by combining the new reflection capabilities with [some bit twiddling tricks](https://lemire.me/blog/2024/05/31/quickly-checking-whether-a-string-needs-escaping/) and a [string_builder class](https://github.com/simdjson/experimental_json_builder/blob/main/src/string_builder.hpp) to help minimize the overhead of memory allocations.
