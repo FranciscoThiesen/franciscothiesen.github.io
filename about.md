@@ -15,7 +15,11 @@ permalink: /about/
     part of 1st division
     - [Hackerrank](https://www.hackerrank.com/fthiesen) - Top 1% in rating for
     Algorithms contest
-
+- A few of my open-source contributions and personal projects
+    - [Serializer based on Reflection for
+    C++26](https://github.com/simdjson/experimental_json_builder)
+    - Minimum Spanning Trees in Expected Linear Time [KKT Algorithm
+    Implementation](https://github.com/FranciscoThiesen/karger-klein-tarjan)
 
 Some of my interests are (in no particular order):
 - Algorithms
@@ -25,7 +29,6 @@ Some of my interests are (in no particular order):
 - Compilers
 - Low latency C++
 - Functional Programming
-
 
 ### Contact me
 [franciscogthiesen@gmail.com](mailto:franciscogthiesen@gmail.com)
