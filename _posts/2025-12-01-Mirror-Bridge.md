@@ -365,6 +365,6 @@ Write the C++ version. Run `mirror_bridge_auto`. Replace the call. Ship it.
 
 Mirror Bridge wouldn't exist without the work of many others. Thanks to Wyatt Childers, Peter Dimov, Dan Katz, Barry Revzin, Andrew Sutton, Faisal Vali, and Daveed Vandevoorde for authoring and championing P2996. Special thanks to Dan Katz for maintaining the [clang-p2996](https://github.com/bloomberg/clang-p2996) branch that makes this all possible today.
 
-The idea of using reflection to generate Python bindings isn't new - it was explored by others before, including in [this CppCon talk](https://www.youtube.com/watch?v=SJ0NFLpR9vE). Mirror Bridge builds on these ideas and packages them into a tool you can use today.
+The idea of using reflection to generate Python bindings isn't new - it was explored by others before, including in [this ACCU 2025 talk](https://www.youtube.com/watch?v=SJ0NFLpR9vE). Mirror Bridge builds on these ideas and packages them into a tool you can use today.
 
 
