@@ -1,6 +1,6 @@
 ---
 layout: post
-title: mirror-bridge - making C++ bindings frictionless
+title: mirror-bridge - making Python bindings frictionless
 tags: Modern C++, Python, Bindings, Reflection, C++26, Performance
 ---
 
@@ -301,7 +301,7 @@ This is fundamentally different from runtime reflection (like Java or C#). Every
 - **Full type safety** - the compiler knows exact types, no casting or dynamic lookups
 - **Works with templates** - you can reflect on template instantiations
 
-Before P2996, generating bindings required either:
+Before P2996, generating Python bindings required either:
 1. Manual listing (pybind11) - tedious and error-prone
 2. Code parsing (SWIG) - fragile and limited
 3. Macros (Boost.Python) - ugly and inflexible
@@ -328,7 +328,7 @@ PYBIND11_MODULE(vec3, m) {
 }
 ```
 
-Every single method needs to be manually listed. And when you add a new one? Update the bindings. Forgot one? Silent failure at runtime.
+Every single method needs to be manually listed. And when you add a new one? Update the Python bindings. Forgot one? Silent failure at runtime.
 
 With Mirror Bridge: write C++, run command, done.
 
