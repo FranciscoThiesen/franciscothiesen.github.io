@@ -26,6 +26,11 @@ struct Vec3 {
     double dot(const Vec3& other) const {
         return x * other.x + y * other.y + z * other.z;
     }
+
+    // Compute the magnitude (norm) of the vector
+    double length() const {
+        return std::sqrt(x*x + y*y + z*z);
+    }
 };
 ```
 
@@ -177,6 +182,8 @@ Imagine you have this in your Python codebase:
 ```python
 def hot_loop(n):
     """This function showed up in your profiler."""
+    direction = Vec3(1, 1, 1)
+    dir_len = direction.length()  # Magnitude (norm) of direction vector
     total = 0.0
     for i in range(n):
         v = Vec3(i * 0.1, i * 0.2, i * 0.3)
