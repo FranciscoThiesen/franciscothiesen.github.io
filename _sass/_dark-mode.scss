@@ -1,0 +1,212 @@
+// Dark mode styles mixin - reusable for both media query and class-based
+@mixin dark-theme {
+  body {
+    background: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .container {
+    background: #1a1a1a;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #f0f0f0;
+  }
+
+  a {
+    color: #58a6ff;
+
+    &:hover, &:active {
+      color: #79c0ff;
+    }
+  }
+
+  .masthead {
+    border-bottom: 1px solid #30363d;
+  }
+
+  .site-info h1 a {
+    color: #f0f0f0;
+  }
+
+  .site-description {
+    color: #8b949e;
+  }
+
+  nav a {
+    color: #8b949e;
+
+    &:hover, &:active {
+      color: #58a6ff;
+    }
+  }
+
+  .posts > .post {
+    border-bottom: 1px solid #30363d;
+  }
+
+  .post {
+    blockquote {
+      border-left: 2px solid #30363d;
+      color: #8b949e;
+    }
+  }
+
+  .entry {
+    color: #c9d1d9;
+  }
+
+  .read-more {
+    color: #58a6ff;
+  }
+
+  .date {
+    color: #8b949e;
+  }
+
+  .comments {
+    border-top: 1px solid #30363d;
+  }
+
+  footer {
+    border-top: 1px solid #30363d;
+  }
+
+  // Code blocks - dark theme
+  pre {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+  }
+
+  code {
+    background-color: #161b22;
+    color: #e6edf3;
+  }
+
+  pre code {
+    background-color: transparent;
+  }
+
+  // Inline code
+  p code, li code {
+    background-color: #161b22;
+    color: #ff7b72;
+    border: 1px solid #30363d;
+  }
+
+  // Syntax highlighting for dark mode
+  .highlight {
+    background-color: #0d1117 !important;
+
+    .c, .cm, .cp, .c1, .cs { color: #8b949e; } // Comments
+    .k, .kc, .kd, .kp, .kr, .kt { color: #ff7b72; } // Keywords
+    .s, .sb, .sc, .sd, .s2, .se, .sh, .si, .sx, .sr, .s1, .ss { color: #a5d6ff; } // Strings
+    .na, .nb, .nc, .no, .nd, .ni, .ne, .nf, .nl, .nn, .nt, .nv { color: #d2a8ff; } // Names
+    .m, .mf, .mh, .mi, .mo, .il { color: #79c0ff; } // Numbers
+    .o, .ow { color: #ff7b72; } // Operators
+    .p { color: #c9d1d9; } // Punctuation
+    .gd { color: #ffa198; background-color: #490202; } // Diff deleted
+    .gi { color: #56d364; background-color: #0f5323; } // Diff inserted
+  }
+
+  // Forms and inputs
+  input, textarea {
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+  }
+
+  // Tables
+  table {
+    border-color: #30363d;
+
+    tr {
+      background-color: #0d1117;
+      border-top: 1px solid #30363d;
+    }
+
+    th, td {
+      border: 1px solid #30363d;
+    }
+  }
+
+  // Theme toggle button in dark mode
+  .theme-toggle {
+    color: #8b949e;
+
+    &:hover {
+      color: #58a6ff;
+    }
+  }
+}
+
+// Theme toggle button styles
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  transition: color 0.2s ease;
+  vertical-align: middle;
+
+  &:hover {
+    color: #4183C4;
+  }
+
+  .sun-icon,
+  .moon-icon {
+    display: none;
+  }
+
+  // Light mode: show moon icon (to switch to dark)
+  .moon-icon {
+    display: block;
+  }
+}
+
+// System preference dark mode (default behavior)
+@media (prefers-color-scheme: dark) {
+  html:not(.light-mode) {
+    @include dark-theme;
+
+    .theme-toggle {
+      .moon-icon {
+        display: none;
+      }
+      .sun-icon {
+        display: block;
+      }
+    }
+  }
+}
+
+// Manual dark mode override (when user clicks toggle)
+html.dark-mode {
+  @include dark-theme;
+
+  .theme-toggle {
+    .moon-icon {
+      display: none;
+    }
+    .sun-icon {
+      display: block;
+    }
+  }
+}
+
+// Manual light mode override (when user clicks toggle in dark system preference)
+html.light-mode {
+  .theme-toggle {
+    .moon-icon {
+      display: block;
+    }
+    .sun-icon {
+      display: none;
+    }
+  }
+}
