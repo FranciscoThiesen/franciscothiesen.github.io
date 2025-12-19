@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Mirror Bridge: Outrunning V8, PyPy, and LuaJIT with C++26 Reflection"
+title: "mirror_bridge: Outrunning V8, PyPy, and LuaJIT with C++26 Reflection"
 tags: Modern C++, Python, Lua, JavaScript, Bindings, Reflection, C++26, Performance
 ---
 

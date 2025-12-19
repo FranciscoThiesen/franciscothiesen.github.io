@@ -1,6 +1,6 @@
 ---
 layout: post
-title: mirror-bridge - making Python bindings frictionless
+title: mirror_bridge - making Python bindings frictionless
 tags: Modern C++, Python, Bindings, Reflection, C++26, Performance
 ---
 
@@ -375,5 +375,3 @@ Mirror Bridge wouldn't exist without the work of many others. Thanks to Wyatt Ch
 Herb Sutter's [CppCon 2025 talk on reflection](https://www.youtube.com/watch?v=7z9NNrRDHQU&list=PLHTh1InhhwT57vblPGsVag5MkTm_Z9-uq&index=16) was also a motivating force for this work, making the case of a common language to rule them all, which motivate me to try to make it easier for other languages to call C++.
 
 The idea of using reflection to generate Python bindings isn't new - it was explored by others before, including in [this ACCU 2025 talk](https://www.youtube.com/watch?v=SJ0NFLpR9vE). Mirror Bridge builds on these ideas and packages them into a tool you can use today.
-
-
