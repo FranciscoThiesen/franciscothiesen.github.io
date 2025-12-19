@@ -9,7 +9,7 @@ tags: Modern C++, Python, Lua, JavaScript, Bindings, Reflection, C++26, Performa
 ---
 
 ![Mandelbrot Zoom Animation](/images/mandelbrot_zoom.gif)
-*Seahorse Valley (-0.75, 0.1), rendered identically by Python, Lua, and JavaScript calling the same C++ engine*
+*The Mandelbrot set, rendered identically by Python, Lua, and JavaScript calling the same C++ engine*
 
 ---
 
