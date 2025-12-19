@@ -22,29 +22,29 @@ PyPy. LuaJIT. V8. These are serious JIT compilers with years of optimization wor
 ```
 PYTHON
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Pure CPython:    2.54s  ████████████████████████████████████████
+Pure CPython:    2.51s  ████████████████████████████████████████
 Pure PyPy:       0.14s  ██▎
 C++ Binding:     0.06s  █
 
 LUA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Pure Lua 5.4:    0.76s  ████████████
+Pure Lua 5.4:    0.77s  ████████████
 Pure LuaJIT:     0.24s  ████
 C++ Binding:     0.07s  █▏
 
 JAVASCRIPT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Pure V8:         0.09s  █▌
+Pure V8:         0.10s  █▌
 C++ Binding:     0.06s  █
 ```
 
 | Runtime | Time | vs C++ Binding |
 |---------|------|----------------|
-| CPython | 2.54s | 42× slower |
-| PyPy | 0.14s | 2.3× slower |
-| Lua 5.4 | 0.76s | 11× slower |
-| LuaJIT | 0.24s | 3.4× slower |
-| V8 | 0.09s | 1.5× slower |
+| CPython | 2.51s | 39× slower |
+| PyPy | 0.14s | 2.2× slower |
+| Lua 5.4 | 0.77s | 10× slower |
+| LuaJIT | 0.24s | 3.2× slower |
+| V8 | 0.10s | 1.5× slower |
 | **C++ Binding** | **0.06s** | — |
 
 V8 is a serious piece of engineering: speculative optimization, inline caching, hidden classes. And we can still beat it.
@@ -207,14 +207,14 @@ private:
 ```python
 m = mandelbrot.Mandelbrot(800, 600, 256)
 m.set_viewport(-0.75, -0.73, 0.1, 0.12)
-pixels = m.render_rgb()  # bytes, 42× faster than pure Python
+pixels = m.render_rgb()  # bytes, 39× faster than pure Python
 ```
 
 **Lua:**
 ```lua
 local m = mandelbrot.Mandelbrot(800, 600, 256)
 m:set_viewport(-0.75, -0.73, 0.1, 0.12)
-local pixels = m:render_rgb()  -- 11× faster than pure Lua
+local pixels = m:render_rgb()  -- 10× faster than pure Lua
 ```
 
 **JavaScript:**
