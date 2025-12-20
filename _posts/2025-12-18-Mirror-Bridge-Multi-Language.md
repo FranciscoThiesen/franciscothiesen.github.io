@@ -241,11 +241,7 @@ One new C++ language feature, many interesting applications!
 
 ---
 
-<small>
-
-**Benchmark methodology:** Each implementation renders the same viewport 10 times; reported time is the median. "Pure" implementations use idiomatic code for each language (numpy-style vectorization for Python, standard loops for Lua/JS). Hardware: Apple M3 Max, single-threaded. Full benchmark code in the repo.
-
-</small>
+<small>**Benchmark methodology:** Each implementation renders the same viewport 10 times; reported time is the median. "Pure" implementations use idiomatic code for each language (numpy-style vectorization for Python, standard loops for Lua/JS). Hardware: Apple M3 Max, single-threaded. Full benchmark code in the repo.</small>
 
 ---
 
