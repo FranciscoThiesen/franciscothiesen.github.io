@@ -35,7 +35,7 @@ For *every single type* you want to use in an ~~unordered_map~~ _insert your fav
 
 I first heard of this concept from Charlie Munger's excellent talk [The Psychology of Human Misjudgment](https://www.youtube.com/watch?v=AKxE4RlCgjY), one of my favorite talks ever. It's also known as [Law of the instrument](https://en.wikipedia.org/wiki/Law_of_the_instrument).
 
-Automatic hashing is actually one of the motivating examples in [P2996 itself](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2996r13.html), listed as "member-wise hash_append." The proposal authors clearly saw this use case coming. Other applications include [mirror_bridge](https://chico.dev/Mirror-Bridge) for automatic binding generation and JSON serialization. This hammer keeps finding nails (:
+Automatic hashing is actually one of the motivating examples in [P2996 itself](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2996r13.html), listed as "member-wise hash_append." The proposal authors clearly saw this use case coming. Other applications include [mirror_bridge](https://chico.dev/Mirror-Bridge) for automatic binding generation and JSON serialization. This hammer is pretty versatile (:
 
 ## Enter C++26 Reflection
 
@@ -205,7 +205,7 @@ This compile-time optimization means a `struct { int x, y, z; }` gets hashed as 
 
 ## Great, This is Convenient. But Can We Make It Fast?
 
-![I have no idea what I'm doing](https://upload.wikimedia.org/wikipedia/en/8/8e/I_Have_No_Idea_What_I%27m_Doing_Dog.jpg)
+![I have no idea what I'm doing](https://i.imgflip.com/51mqjx.jpg)
 
 Let me be upfront: **I'm not a cryptography expert.** As [Schneier's Law](https://www.schneier.com/blog/archives/2011/04/schneiers_law.html) reminds us: *"Anyone can design a security system that he himself cannot break. This doesn't mean it's secure."* The same applies to hash functions. It's easy to write something that *looks* like it works, but designing one with good statistical properties is hard.
 
