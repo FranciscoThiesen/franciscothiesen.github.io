@@ -18,10 +18,12 @@ struct Point {
 template<>
 struct std::hash<Point> {
     std::size_t operator()(const Point& p) const noexcept {
-        std::size_t h = std::hash<int>{}(p.x);
-        h ^= std::hash<int>{}(p.y) + 0x9e3779b9 + (h << 6) + (h >> 2);
-        h ^= std::hash<int>{}(p.z) + 0x9e3779b9 + (h << 6) + (h >> 2);
-        return h;
+        std::size_t seed = 0;
+        // boost::hash_combine pattern
+        seed ^= std::hash<int>{}(p.x) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        seed ^= std::hash<int>{}(p.y) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        seed ^= std::hash<int>{}(p.z) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        return seed;
     }
 };
 ```
