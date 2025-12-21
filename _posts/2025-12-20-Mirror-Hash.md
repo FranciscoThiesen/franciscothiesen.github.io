@@ -205,8 +205,11 @@ This compile-time optimization means a `struct { int x, y, z; }` gets hashed as 
 
 ## Great, This is Convenient. But Can We Make It Fast?
 
-![I have no idea what I'm doing](https://i.imgflip.com/51mqjx.jpg)
-*"I have no idea what I'm doing"*
+<p align="center">
+<img src="https://i.imgflip.com/51mqjx.jpg" alt="I have no idea what I'm doing" />
+<br>
+<em>"I have no idea what I'm doing"</em>
+</p>
 
 Let me be upfront: **I'm not a cryptography expert.** As [Schneier's Law](https://www.schneier.com/blog/archives/2011/04/schneiers_law.html) reminds us: *"Anyone can design a security system that he himself cannot break. This doesn't mean it's secure."* The same applies to hash functions. It's easy to write something that *looks* like it works, but designing one with good statistical properties is hard.
 
@@ -255,9 +258,9 @@ Here's where the benchmarking comes in. I partitioned inputs by size and optimiz
 >128KB:       Weak accumulation + strong finalization
 ```
 
-### Overlapping Reads: Eliminating Branches
+### Overlapping Reads
 
-For inputs like 5 bytes, we read bytes 0-3 and bytes 1-4. They overlap, but that's fine: we're hashing, not parsing. The key insight: **two unaligned 32-bit reads are faster than branching on the exact size**.
+For inputs like 5 bytes, we read bytes 0-3 and bytes 1-4. They overlap, but that's fine: we're hashing, not parsing.
 
 ```cpp
 // 4-8 bytes: Read from start and end, they might overlap
@@ -270,7 +273,9 @@ inline uint64_t hash_4_8(const void* data) noexcept {
 }
 ```
 
-The alternative would be a switch statement or chain of if-else branches to handle 4, 5, 6, 7, and 8-byte inputs differently. That adds branch misprediction overhead. With overlapping reads, we always do exactly two 32-bit loads. The CPU's branch predictor stays happy, and the instruction pipeline stays full.
+Note that in this template, **N is a compile-time constant**. There are no runtime branches here. The compiler generates specialized code for each size. The overlapping reads technique is primarily about **code simplicity**: one template handles the entire 4-8 byte range elegantly.
+
+This pattern matters more in the runtime hash function (`hash(const void* key, std::size_t len, ...)`) where `len` is unknown at compile time. There, overlapping reads avoid branching on the exact size within a range.
 
 ### Parallel Accumulators: Exploiting Instruction-Level Parallelism
 
@@ -475,6 +480,48 @@ Run the benchmark yourself:
 ```bash
 ./build/trivial_vs_nontrivial
 ```
+
+## What About Existing Solutions?
+
+Fair question: do we really need C++26 reflection for this? There are existing approaches:
+
+**[Boost.Describe](https://www.boost.org/doc/libs/1_87_0/libs/describe/doc/html/describe.html):** Requires annotating each struct with a macro:
+```cpp
+struct Point { int x, y; };
+BOOST_DESCRIBE_STRUCT(Point, (), (x, y))  // Manual member list
+```
+Works well, but you must remember to update the macro when adding members. Miss one, and you get silent bugs.
+
+**[Cista](https://github.com/felixguendling/cista):** Requires a `cista_members()` function in each type:
+```cpp
+struct Point {
+    int x, y;
+    auto cista_members() { return std::tie(x, y); }  // Manual
+};
+```
+Same issue: manual enumeration that can drift out of sync.
+
+**[Abseil Hash](https://abseil.io/docs/cpp/guides/hash):** Requires a friend function:
+```cpp
+struct Point {
+    int x, y;
+    template<typename H>
+    friend H AbslHashValue(H h, const Point& p) {
+        return H::combine(std::move(h), p.x, p.y);  // Manual
+    }
+};
+```
+
+The pattern is clear: all existing solutions require **manual member enumeration**. You're still writing boilerplate, just in a different form. Add a member, forget to update the hash, get subtle bugs.
+
+**mirror_hash is different.** With C++26 reflection, the compiler provides the member list. There's nothing to keep in sync:
+
+```cpp
+struct Point { int x, y, z; };  // Add z, hash automatically includes it
+auto h = mirror_hash::hash(Point{1, 2, 3});  // Just works
+```
+
+This is the fundamental advantage: **true automatic generation** with zero annotation overhead.
 
 ## The Catch: You Need a Special Compiler (for now)
 
