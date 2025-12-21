@@ -18,8 +18,7 @@ struct Point {
 template<>
 struct std::hash<Point> {
     std::size_t operator()(const Point& p) const noexcept {
-        std::size_t h = 0;
-        h ^= std::hash<int>{}(p.x) + 0x9e3779b9 + (h << 6) + (h >> 2);
+        std::size_t h = std::hash<int>{}(p.x);
         h ^= std::hash<int>{}(p.y) + 0x9e3779b9 + (h << 6) + (h >> 2);
         h ^= std::hash<int>{}(p.z) + 0x9e3779b9 + (h << 6) + (h >> 2);
         return h;
@@ -220,6 +219,8 @@ That's why the core mixing primitives in mirror_hash come from people who actual
 - **[xxHash](https://github.com/Cyan4973/xxHash)** by Yann Collet: Battle-tested for a decade
 
 What I contributed is the *integration layer*: using C++26 reflection to automatically feed your struct's bytes into these proven algorithms. For the `mirror_hash::fast` namespace, I did venture into optimization territory, but the core mixing function is straight from rapidhash.
+
+**Important disclaimer:** I make no cryptographic claims about `mirror_hash::fast`. While it passes SMHasher's quality tests, it hasn't been analyzed in depth by cryptography experts. For hash tables and checksums, it should be fine. For anything security-sensitive, use a properly vetted cryptographic hash.
 
 ### The `fast` Namespace: Benchmark-Driven Optimization
 
