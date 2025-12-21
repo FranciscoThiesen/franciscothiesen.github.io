@@ -206,6 +206,7 @@ This compile-time optimization means a `struct { int x, y, z; }` gets hashed as 
 ## Great, This is Convenient. But Can We Make It Fast?
 
 ![I have no idea what I'm doing](https://i.imgflip.com/51mqjx.jpg)
+*"I have no idea what I'm doing"*
 
 Let me be upfront: **I'm not a cryptography expert.** As [Schneier's Law](https://www.schneier.com/blog/archives/2011/04/schneiers_law.html) reminds us: *"Anyone can design a security system that he himself cannot break. This doesn't mean it's secure."* The same applies to hash functions. It's easy to write something that *looks* like it works, but designing one with good statistical properties is hard.
 
