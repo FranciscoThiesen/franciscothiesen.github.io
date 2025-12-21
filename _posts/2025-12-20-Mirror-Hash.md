@@ -6,7 +6,7 @@ tags: Modern C++, Hashing, Reflection, C++26, Performance
 
 # "I Love to Specialize Hash Functions for My C++ Classes" (No One, Ever)
 
-Writing `std::hash` specializations is one of those C++ rituals that nobody enjoys. You've probably done something like:
+Writing `std::hash` specializations is one of those C++ rituals that (almost) nobody enjoys. You've probably done something like:
 
 ```cpp
 struct Point {
@@ -35,7 +35,7 @@ For *every single type* you want to use in an ~~unordered_map~~ _insert your fav
 
 I first heard of this concept from Charlie Munger's excellent talk [The Psychology of Human Misjudgment](https://www.youtube.com/watch?v=AKxE4RlCgjY), one of my favorite talks ever. It's also known as [Law of the instrument](https://en.wikipedia.org/wiki/Law_of_the_instrument).
 
-I've read about C++26 reflection a year ago and I keep finding new uses for it: [mirror_bridge](https://chico.dev/mirror_bridge) for automatic binding generation, [simdjson](https://github.com/simdjson/simdjson) for JSON serialization, and now automatic hash function generation. This hammer is a gift that keeps on giving (:
+Automatic hashing is actually one of the motivating examples in [P2996 itself](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2996r13.html), listed as "member-wise hash_append." The proposal authors clearly saw this use case coming. Other applications include [mirror_bridge](https://chico.dev/Mirror-Bridge) for automatic binding generation and JSON serialization. This hammer keeps finding nails (:
 
 ## Enter C++26 Reflection
 
