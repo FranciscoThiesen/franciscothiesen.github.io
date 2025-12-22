@@ -28,6 +28,8 @@ struct std::hash<Point> {
 };
 ```
 
+This pattern is inspired by [boost::hash_combine](https://www.boost.org/doc/libs/1_86_0/libs/container_hash/doc/html/hash.html#combine), the de facto standard for combining hash values in C++.
+
 For *every single type* you want to use in an ~~unordered_map~~ _insert your favorite hash table here_. And when your struct changes? Update the hash function. Forget a member? Silent bugs. Add a pointer to a vector? Now you need to think about whether to hash the pointer or the contents.
 
 **What if I told you C++26 can help us do this automatically?**
