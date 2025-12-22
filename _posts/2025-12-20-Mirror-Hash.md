@@ -282,6 +282,16 @@ Note that in this template, **N is a compile-time constant**. There are no runti
 
 This pattern matters more in the runtime hash function (`hash(const void* key, std::size_t len, ...)`) where `len` is unknown at compile time. There, overlapping reads avoid branching on the exact size within a range.
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/main/assets/images/mirror_hash/chart_overlapping_reads.svg" alt="Small Data Performance Chart" />
+</p>
+
+**Where does time go?** The flamegraph below shows the time distribution. With compile-time known sizes, we eliminate the size-check branches entirely:
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/main/assets/images/mirror_hash/flamegraph_small.svg" alt="Small Data Flamegraph" />
+</p>
+
 ### Parallel Accumulators: Exploiting Instruction-Level Parallelism
 
 Modern CPUs can perform multiple multiplications at the same time, but only if there are no data dependencies between them. A single chain of `mix()` calls forces the CPU to wait:
@@ -307,6 +317,16 @@ return mix(mix(a, c), mix(b, d));
 ```
 
 I tried 2-way, 4-way, 6-way, and 8-way parallelism. 4-way won for medium sizes; 6-way won for larger inputs. The numbers came from benchmarks, not theory.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/main/assets/images/mirror_hash/chart_parallel_accumulators.svg" alt="Parallel Accumulators Performance Chart" />
+</p>
+
+**Time distribution:** With 6-way parallelism, the CPU can execute multiple `mix()` operations simultaneously instead of waiting for each one to complete:
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/main/assets/images/mirror_hash/flamegraph_medium.svg" alt="Medium Data Flamegraph" />
+</p>
 
 ### The 50% Bulk Improvement: Weak Accumulation + Strong Finalization
 
@@ -370,6 +390,16 @@ Three `mix()` calls provide excellent avalanche: every input bit affects every o
 
 **The result:** ~50% faster than rapidhash for inputs >128KB, while still passing all SMHasher quality tests.
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/main/assets/images/mirror_hash/chart_bulk_data.svg" alt="Bulk Data Performance Chart" />
+</p>
+
+**Where does the 50% come from?** The flamegraph tells the story. The expensive 128-bit multiply dominates rapidhash. By switching to a cheaper 64-bit multiply-add for the main loop, we cut processing time nearly in half:
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/main/assets/images/mirror_hash/flamegraph_bulk.svg" alt="Bulk Data Flamegraph" />
+</p>
+
 ## Quality Validation: SMHasher
 
 Quality matters as much as speed. A fast hash that produces collisions is useless.
@@ -420,6 +450,10 @@ Tested on ARM64 (Apple Silicon M3 Max), Clang 21, `-O3 -march=native`:
 | 128KB+ | **+50% faster** |
 
 **Throughput:** ~58 GB/s bulk, ~10.7 cycles/hash for small keys.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/main/assets/images/mirror_hash/chart_summary.svg" alt="Performance Summary Chart" />
+</p>
 
 ### What is "Trivially Copyable"?
 

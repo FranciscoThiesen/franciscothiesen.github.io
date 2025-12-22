@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" 
+style="font-family: Verdana, sans-serif;">
+
+  <defs>
+    <linearGradient id="warm" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FF6B6B"/>
+      <stop offset="100%" style="stop-color:#FFB347"/>
+    </linearGradient>
+    <linearGradient id="cool" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4ECDC4"/>
+      <stop offset="100%" style="stop-color:#2ECC71"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="400" fill="#FAFAFA"/>
+
+  <!-- Title -->
+  <text x="600.0" y="25" text-anchor="middle" font-size="16" font-weight="bold">Bulk Data Hashing (1MB): Time Distribution</text>
+
+  <!-- rapidhash (baseline) -->
+  <text x="20" y="55" font-size="12" font-weight="bold" fill="#333">rapidhash (baseline)</text>
+  <g class="frame">
+    <title>mix() - 128-bit multiply: 60.0% of total time</title>
+    <rect x="20" y="60" width="696.0" height="26" fill="#FF6B6B" stroke="#333" stroke-width="1" rx="3"/>
+    <text x="368.0" y="77" text-anchor="middle" font-size="11" fill="#000">mix() - 128-bit multiply</text>
+  </g>
+  <g class="frame">
+    <title>read64() - memory loads: 25.0% of total time</title>
+    <rect x="716.0" y="60" width="290.0" height="26" fill="#FF8E72" stroke="#333" stroke-width="1" rx="3"/>
+    <text x="861.0" y="77" text-anchor="middle" font-size="11" fill="#000">read64() - memory loads</text>
+  </g>
+  <g class="frame">
+    <title>loop overhead: 10.0% of total time</title>
+    <rect x="1006.0" y="60" width="116.0" height="26" fill="#FFB347" stroke="#333" stroke-width="1" rx="3"/>
+    <text x="1064.0" y="77" text-anchor="middle" font-size="11" fill="#000">loop overhead</text>
+  </g>
+  <g class="frame">
+    <title>finalization: 5.0% of total time</title>
+    <rect x="1122.0" y="60" width="58.0" height="26" fill="#FFD93D" stroke="#333" stroke-width="1" rx="3"/>
+  </g>
+  <text x="1180" y="77" text-anchor="end" font-size="11" fill="#666">100%</text>
+  <!-- mirror_hash::fast -->
+  <text x="20" y="131" font-size="12" font-weight="bold" fill="#333">mirror_hash::fast</text>
+  <g class="frame">
+    <title>cheap_acc() - 64-bit multiply: 25.0% of baseline time</title>
+    <rect x="20" y="136" width="290.0" height="26" fill="#4ECDC4" stroke="#333" stroke-width="1" rx="3"/>
+    <text x="165.0" y="153" text-anchor="middle" font-size="11" fill="#000">cheap_acc() - 64-bit multiply</text>
+  </g>
+  <g class="frame">
+    <title>read64() - memory loads: 20.0% of baseline time</title>
+    <rect x="310.0" y="136" width="232.0" height="26" fill="#45B7AA" stroke="#333" stroke-width="1" rx="3"/>
+    <text x="426.0" y="153" text-anchor="middle" font-size="11" fill="#000">read64() - memory loads</text>
+  </g>
+  <g class="frame">
+    <title>loop + prefetch: 5.0% of baseline time</title>
+    <rect x="542.0" y="136" width="58.0" height="26" fill="#3D9970" stroke="#333" stroke-width="1" rx="3"/>
+  </g>
+  <g class="frame">
+    <title>strong finalization (3x mix): 3.0% of baseline time</title>
+    <rect x="600.0" y="136" width="34.8" height="26" fill="#2ECC71" stroke="#333" stroke-width="1" rx="3"/>
+  </g>
+  <text x="1180" y="153" text-anchor="end" font-size="11" fill="#2ECC71" font-weight="bold">53% (47% faster)</text>
+
+  <!-- Legend -->
+  <rect x="20" y="370" width="15" height="15" fill="#FF6B6B" rx="2"/>
+  <text x="40" y="382" font-size="10" fill="#333">Baseline (slower)</text>
+  <rect x="150" y="370" width="15" height="15" fill="#4ECDC4" rx="2"/>
+  <text x="170" y="382" font-size="10" fill="#333">Optimized (faster)</text>
+  <text x="1180" y="382" text-anchor="end" font-size="10" fill="#666">Flame width = time spent</text>
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <rect width="600" height="400" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <text x="300.0" y="25" text-anchor="middle" font-size="18" font-weight="bold" fill="#1F2937">Weak Accumulation: Bulk Data Throughput</text>
+  <text x="300.0" y="45" text-anchor="middle" font-size="12" fill="#9CA3AF">Throughput in GB/s (higher is better) - ARM64 M3 Max</text>
+
+  <!-- Grid lines -->
+  <line x1="80" y1="60.0" x2="570" y2="60.0" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="70" y="64.0" text-anchor="end" font-size="11" fill="#9CA3AF">66.7</text>
+  <line x1="80" y1="112.0" x2="570" y2="112.0" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="70" y="116.0" text-anchor="end" font-size="11" fill="#9CA3AF">53.4</text>
+  <line x1="80" y1="164.0" x2="570" y2="164.0" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="70" y="168.0" text-anchor="end" font-size="11" fill="#9CA3AF">40.0</text>
+  <line x1="80" y1="216.0" x2="570" y2="216.0" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="70" y="220.0" text-anchor="end" font-size="11" fill="#9CA3AF">26.7</text>
+  <line x1="80" y1="268.0" x2="570" y2="268.0" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="70" y="272.0" text-anchor="end" font-size="11" fill="#9CA3AF">13.3</text>
+  <line x1="80" y1="320.0" x2="570" y2="320.0" stroke="#E5E7EB" stroke-width="1"/>
+  <text x="70" y="324.0" text-anchor="end" font-size="11" fill="#9CA3AF">0.0</text>
+  <text x="15" y="190.0" text-anchor="middle" font-size="12" fill="#1F2937" transform="rotate(-90, 15, 190.0)">Throughput (GB/s)</text>
+
+  <!-- Bars -->
+  <rect x="96.33333333333336" y="167.976011994003" width="57.166666666666664" height="152.023988005997" fill="#6B7280" rx="2"/>
+  <text x="124.91666666666669" y="162.976011994003" text-anchor="middle" font-size="10" fill="#1F2937">39.00</text>
+  <rect x="169.83333333333334" y="105.60719640179906" width="57.166666666666664" height="214.39280359820094" fill="#3B82F6" rx="2"/>
+  <text x="198.41666666666669" y="100.60719640179906" text-anchor="middle" font-size="10" fill="#1F2937">55.00</text>
+  <text x="161.66666666666669" y="85.60719640179906" text-anchor="middle" font-size="11" font-weight="bold" fill="#10B981">+41.0%</text>
+  <text x="161.66666666666669" y="340" text-anchor="middle" font-size="12" fill="#1F2937">128 KB</text>
+  <rect x="259.66666666666663" y="169.92503748125935" width="57.166666666666664" height="150.07496251874065" fill="#6B7280" rx="2"/>
+  <text x="288.24999999999994" y="164.92503748125935" text-anchor="middle" font-size="10" fill="#1F2937">38.50</text>
+  <rect x="333.1666666666667" y="97.81109445277357" width="57.166666666666664" height="222.18890554722643" fill="#3B82F6" rx="2"/>
+  <text x="361.75" y="92.81109445277357" text-anchor="middle" font-size="10" fill="#1F2937">57.00</text>
+  <text x="325.0" y="77.81109445277357" text-anchor="middle" font-size="11" font-weight="bold" fill="#10B981">+48.1%</text>
+  <text x="325.0" y="340" text-anchor="middle" font-size="12" fill="#1F2937">256 KB</text>
+  <rect x="423.0" y="169.92503748125935" width="57.166666666666664" height="150.07496251874065" fill="#6B7280" rx="2"/>
+  <text x="451.5833333333333" y="164.92503748125935" text-anchor="middle" font-size="10" fill="#1F2937">38.50</text>
+  <rect x="496.50000000000006" y="93.91304347826082" width="57.166666666666664" height="226.08695652173918" fill="#3B82F6" rx="2"/>
+  <text x="525.0833333333334" y="88.91304347826082" text-anchor="middle" font-size="10" fill="#1F2937">58.00</text>
+  <text x="488.33333333333337" y="73.91304347826082" text-anchor="middle" font-size="11" font-weight="bold" fill="#10B981">+50.6%</text>
+  <text x="488.33333333333337" y="340" text-anchor="middle" font-size="12" fill="#1F2937">1 MB</text>
+
+  <!-- Legend -->
+  <rect x="220.0" y="365" width="15" height="15" fill="#6B7280" rx="2"/>
+  <text x="240.0" y="377" font-size="11" fill="#1F2937">rapidhash</text>
+  <rect x="320.0" y="365" width="15" height="15" fill="#3B82F6" rx="2"/>
+  <text x="340.0" y="377" font-size="11" fill="#1F2937">mirror_hash::fast</text>
+
+  <!-- Axes -->
+  <line x1="80" y1="60" x2="80" y2="320" stroke="#9CA3AF" stroke-width="2"/>
+  <line x1="80" y1="320" x2="570" y2="320" stroke="#9CA3AF" stroke-width="2"/>
+</svg>
