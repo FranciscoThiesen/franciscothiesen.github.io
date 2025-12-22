@@ -38,7 +38,7 @@ For *every single type* you want to use in an ~~unordered_map~~ _insert your fav
 
 I first heard of this concept from Charlie Munger's excellent talk [The Psychology of Human Misjudgment](https://www.youtube.com/watch?v=AKxE4RlCgjY), one of my favorite talks ever. It's also known as [Law of the instrument](https://en.wikipedia.org/wiki/Law_of_the_instrument).
 
-Automatic hashing is actually one of the motivating examples in [P2996 itself](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2996r13.html), listed as "member-wise hash_append." The proposal authors clearly saw this use case coming. Other applications include [mirror_bridge](https://chico.dev/Mirror-Bridge) for automatic binding generation and JSON serialization. This hammer is pretty versatile (:
+Automatic hashing is actually one of the motivating examples in [P2996 itself](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2996r13.html), listed as "member-wise hash_append." The proposal authors clearly saw this use case coming. Other applications include [mirror_bridge](https://chico.dev/Mirror-Bridge) for automatic binding generation and [simdjson](https://github.com/simdjson/simdjson) for [reflection-based JSON parsing](https://github.com/simdjson/simdjson/blob/master/doc/basics.md#c26-static-reflection). This hammer is pretty versatile (:
 
 ## Enter C++26 Reflection
 
