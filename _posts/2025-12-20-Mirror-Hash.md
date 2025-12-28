@@ -379,7 +379,7 @@ uint8x16_t data = vld1q_u8(end - 16);           // single 16-byte load
 data = veorq_u8(data, vdupq_n_u8(remainder_len)); // XOR length into every byte
 ```
 
-The XOR with remainder length ensures different-length inputs hash differently, even when they share the overlapping bytes. This avoids stack allocation, zero-initialization, and the variable-length copy—trading them for a single aligned load. Measured results:
+The XOR with remainder length ensures different-length inputs hash differently, even when they share the overlapping bytes. Benchmarking shows this is **2x faster** than the memcpy approach for handling partial blocks—the stack allocation, zero-initialization, and variable-length copy add significant overhead compared to a single 16-byte load. Measured results:
 
 | Size | Winner | Speedup |
 |------|--------|---------|
