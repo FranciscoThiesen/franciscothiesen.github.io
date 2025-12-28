@@ -1,16 +1,20 @@
 ---
 layout: post
-title: mirror_hash - Automatic hashing for any class
+title: "C++26 Reflection: Never Write std::hash Again"
 tags: Modern C++, Hashing, Reflection, C++26, Performance
 ---
 
 # "I Love to Specialize Hash Functions for My C++ Classes" (No One, Ever)
 
-Writing `std::hash` specializations is one of those C++ rituals that (almost) nobody enjoys. You've probably done something like:
+**TL;DR:** [mirror_hash](https://github.com/FranciscoThiesen/mirror_hash) uses C++26 reflection to automatically generate hash functions for any class/struct. No macros, no annotations, no manual member lists. A trivially copyable `Point{int, int}` hashes in under 2ns. Passes all [SMHasher](https://github.com/rurban/smhasher) tests. Works today with [clang-p2996](https://github.com/bloomberg/clang-p2996).
+
+---
+
+Writing `std::hash` specializations is one of those C++ rituals that nobody enjoys. You've probably done something like:
 
 ```cpp
 struct Point {
-    int x, y, z;
+    int x, y;
     bool operator==(const Point&) const = default;
 };
 
@@ -22,7 +26,6 @@ struct std::hash<Point> {
         // boost::hash_combine pattern
         seed ^= std::hash<int>{}(p.x) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         seed ^= std::hash<int>{}(p.y) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        seed ^= std::hash<int>{}(p.z) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         return seed;
     }
 };
@@ -30,15 +33,9 @@ struct std::hash<Point> {
 
 This pattern is based on [boost::hash_combine](https://www.boost.org/doc/libs/1_86_0/libs/container_hash/doc/html/hash.html#combine).
 
-For *every single type* you want to use in an ~~unordered_map~~ _insert your favorite hash table here_. And when your struct changes? Update the hash function. Forget a member? Silent bugs. Add a pointer to a vector? Now you need to think about whether to hash the pointer or the contents.
+For *every single type* you want to use in an `unordered_map` (or any hash table). And when your struct changes? Update the hash function. Forget a member? Silent bugs. Add a pointer to a vector? Now you need to think about whether to hash the pointer or the contents.
 
-**What if I told you C++26 can help us do this automatically?**
-
-*"To a man with a hammer, every problem looks like a nail."*
-
-I first heard of this concept from Charlie Munger's excellent talk [The Psychology of Human Misjudgment](https://www.youtube.com/watch?v=AKxE4RlCgjY), one of my favorite talks ever. It's also known as [Law of the instrument](https://en.wikipedia.org/wiki/Law_of_the_instrument).
-
-Automatic hashing is actually one of the motivating examples in [P2996 itself](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2996r13.html), listed as "member-wise hash_append." The proposal authors clearly saw this use case coming. Other applications include [mirror_bridge](https://chico.dev/Mirror-Bridge) for automatic binding generation and [simdjson](https://github.com/simdjson/simdjson) for [reflection-based JSON parsing and serialization](https://github.com/simdjson/simdjson/blob/master/doc/basics.md#c26-static-reflection). This hammer is pretty versatile (:
+**What if I told you C++26 can do this automatically?**
 
 ## Enter C++26 Reflection
 
@@ -66,7 +63,27 @@ int main() {
 }
 ```
 
-No boilerplate. No manual member enumeration. It just works out of the box with any struct/class/type you throw at it.
+No boilerplate. No manual member enumeration. It just works.
+
+And it's not limited to simple types. Complex nested structures work automatically:
+
+```cpp
+struct User {
+    std::string name;
+    int age;
+    std::vector<std::string> tags;
+    std::optional<std::string> email;
+};
+
+std::unordered_map<User, Data, mirror_hash::hasher<>> users;
+users[{"Alice", 30, {"admin", "dev"}, "alice@example.com"}] = data;
+```
+
+Strings, vectors, optionals, nested structs: they all hash correctly. No manual enumeration required.
+
+Automatic hashing is actually one of the motivating examples in [P2996 itself](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p2996r13.html), listed as "member-wise hash_append." The proposal authors clearly saw this use case coming. If you want to take a look at some other projects leveraging reflection you can take a look at [mirror_bridge](https://chico.dev/Mirror-Bridge) for automatic binding generation and [simdjson](https://github.com/simdjson/simdjson) for [reflection-based JSON parsing and serialization](https://github.com/simdjson/simdjson/blob/master/doc/basics.md#c26-static-reflection).
+
+As Munger warned in [one of my favorite talks](https://www.youtube.com/watch?v=pqzcCfUglws&t=10s): "To a man with a hammer, everything looks like a nail." At least compile-time reflection is a really cool hammer.
 
 ## How It Works: Reflection at Compile Time
 
@@ -99,6 +116,48 @@ Let's break down the syntax:
 - **`template for`**: Like a regular `for`, but unrolls at compile time. Each iteration is a separate instantiation.
 - **`value.[:member:]`**: The *splice operator*. Converts a reflection back into code (in this case, member access).
 
+## What About Existing Solutions?
+
+Fair question: do we really need C++26 reflection for this? There are existing approaches:
+
+**[Boost.Describe](https://www.boost.org/doc/libs/1_87_0/libs/describe/doc/html/describe.html):** Requires annotating each struct with a macro:
+```cpp
+struct Point { int x, y; };
+BOOST_DESCRIBE_STRUCT(Point, (), (x, y))  // Manual member list
+```
+Works well, but you must remember to update the macro when adding members. Miss one, and you get silent bugs.
+
+**[Cista](https://github.com/felixguendling/cista):** Requires a `cista_members()` function in each type:
+```cpp
+struct Point {
+    int x, y;
+    auto cista_members() { return std::tie(x, y); }  // Manual
+};
+```
+Same issue: manual enumeration that can drift out of sync.
+
+**[Abseil Hash](https://abseil.io/docs/cpp/guides/hash):** Requires a friend function:
+```cpp
+struct Point {
+    int x, y;
+    template<typename H>
+    friend H AbslHashValue(H h, const Point& p) {
+        return H::combine(std::move(h), p.x, p.y);  // Manual
+    }
+};
+```
+
+The pattern is clear: all existing solutions require **manual member enumeration**. You're still writing boilerplate, just in a different form. Add a member, forget to update the hash, get subtle bugs.
+
+**mirror_hash is different.** With C++26 reflection, the compiler provides the member list. There's nothing to keep in sync:
+
+```cpp
+struct Point { int x, y, z; };  // Add z, hash automatically includes it
+auto h = mirror_hash::hash(Point{1, 2, 3});  // Just works
+```
+
+This is the fundamental advantage: **true automatic generation** with zero annotation overhead.
+
 ## The Key Insight: Hash Only What You Use
 
 One concern with automatic hashing: "Won't this generate code for every type in my program?"
@@ -127,7 +186,7 @@ int main() {
 
 The compiler only generates `hash_impl<Policy, ActuallyHashed>`. The `NeverHashed` struct incurs zero overhead because we never hash it.
 
-This is the beauty of C++ templates: you don't pay for what you don't use. Reflection extends this principle: metadata is queried at compile time, and only for types that actually need it. See [`test_lazy_instantiation`](https://github.com/FranciscoThiesen/mirror_hash/blob/main/tests/test_mirror_hash.cpp#L658) for the test that verifies this behavior.
+This is the beauty of C++ templates: you don't pay for what you don't use. Reflection extends this principle: metadata is queried at compile time, and only for types that actually need it. See [`lazy_instantiation` in test_mirror_hash.cpp](https://github.com/FranciscoThiesen/mirror_hash/blob/main/tests/test_mirror_hash.cpp) for the test that verifies this behavior.
 
 ## Handling Non-Trivially Copyable Types
 
@@ -204,31 +263,55 @@ std::size_t hash_impl(const T& value) noexcept {
 }
 ```
 
-This compile-time optimization means a `struct { int x, y, z; }` gets hashed as a single 12-byte block, not three separate hash operations combined together.
+This compile-time optimization means a `struct { int x, y, z; }` gets hashed as a single 12-byte block, not three separate hash operations combined.
 
-## Great, This is Convenient. But Can We Make It Fast?
+## Under the Hood: The Byte Hashing Layer
 
-<p align="center">
-<img src="https://i.imgflip.com/51mqjx.jpg" alt="I have no idea what I'm doing" />
-<br>
-<em>"I have no idea what I'm doing"</em>
-</p>
+This library has two distinct parts:
 
-Let me be upfront: **I'm not a cryptography expert.** As [Schneier's Law](https://www.schneier.com/blog/archives/2011/04/schneiers_law.html) reminds us: *"Anyone can design a security system that he himself cannot break. This doesn't mean it's secure."* The same applies to hash functions. It's easy to write something that *looks* like it works, but designing one with good statistical properties is hard.
+1. **The reflection layer** (novel): Automatically discovers struct members at compile time
+2. **The byte hashing layer** (borrowed): Converts bytes to hash values using proven algorithms
 
-That's why the core mixing primitives in mirror_hash come from people who actually know what they're doing:
+> **Disclaimer:** I'm not a cryptography expert. The byte hashing in mirror_hash comes from people who actually know what they're doing. I make no cryptographic claims. For hash tables and checksums, this should be fine. For security-sensitive applications, please use a proper cryptographic hash.
 
-- **[wyhash](https://github.com/wangyi-fudan/wyhash)** by Wang Yi: The default hash used by Go, Zig, and Nim
-- **[rapidhash](https://github.com/Nicoshev/rapidhash)** by Nicolas De Carli: A faster variant of wyhash
-- **[xxHash](https://github.com/Cyan4973/xxHash)** by Yann Collet: Battle-tested for a decade
+![I have no idea what I'm doing](/images/i-have-no-idea-what-im-doing.jpg)
 
-What I contributed is the *integration layer*: using C++26 reflection to automatically feed your struct's bytes into these proven algorithms. For the `mirror_hash::fast` namespace, I did venture into optimization territory, but the core mixing function is straight from rapidhash.
+The byte hashing is built on:
 
-**Important disclaimer:** I make no cryptographic claims about `mirror_hash::fast`. While it passes SMHasher's quality tests, it hasn't been analyzed in depth by cryptography experts. For hash tables and checksums, it should be fine. For anything security-sensitive, use a properly vetted cryptographic hash.
+- **[rapidhash](https://github.com/Nicoshev/rapidhash)** by Nicolas De Carli: What mirror_hash uses under the hood
+- **[wyhash](https://github.com/wangyi-fudan/wyhash)** by Wang Yi: The foundation that rapidhash builds on
+- **[GxHash](https://github.com/ogxd/gxhash)** by ogxd: Inspiration for the ARM64 AES optimization
 
-### The `fast` Namespace: Benchmark-Driven Optimization
+**Note on architecture:** The reflection layer and byte hashing layer are completely independent. The reflection machinery discovers struct members and serializes them; the byte hasher converts those bytes to a hash value. You could swap rapidhash for xxHash, CityHash, or even SHA-256 if you needed different properties (portability, cryptographic strength, etc.). The AES optimization is just one choice we made for ARM64 performance - it's not fundamental to the approach. The main contribution here is the *integration layer*: using C++26 reflection to automatically feed your struct's bytes into these proven algorithms.
 
-The `mirror_hash::fast::hash()` function started as a rapidhash port, but I kept benchmarking and tweaking until the numbers stopped improving. The result is a collection of size-specific strategies. Not because "different sizes need different algorithms," but because **I ran benchmarks and these are what worked best**.
+**Using a different hash function:** mirror_hash uses a policy-based design. You can plug in any hash function by defining a policy with `mix` and `combine` methods:
+
+```cpp
+// Define a custom policy wrapping your preferred hash
+struct my_xxhash_policy {
+    static constexpr std::size_t mix(std::size_t k) noexcept {
+        // Your finalization logic (e.g., XXH3_64bits avalanche)
+        k ^= k >> 33;
+        k *= 0xff51afd7ed558ccdULL;
+        k ^= k >> 33;
+        return k;
+    }
+
+    static constexpr std::size_t combine(std::size_t seed, std::size_t value) noexcept {
+        // Your combining logic
+        return seed ^ (value + 0x9e3779b9 + (seed << 6) + (seed >> 2));
+    }
+};
+
+// Use it with any struct
+struct Point { int x, y; };
+auto h = mirror_hash::hash<my_xxhash_policy>(Point{1, 2});
+
+// Or with containers
+std::unordered_set<Point, mirror_hash::hasher<my_xxhash_policy>> points;
+```
+
+mirror_hash ships with several built-in policies: `mirror_hash_policy` (default, with AES acceleration on ARM64), `folly_policy`, `wyhash_policy`, `murmur3_policy`, `xxhash3_policy`, `fnv1a_policy`, and `aes_policy`. For bulk byte hashing, you can also specialize `hash_bytes<YourPolicy>` to use your preferred algorithm for raw memory.
 
 **The Core Mixing Primitive:**
 
@@ -247,320 +330,169 @@ inline uint64_t mix(uint64_t A, uint64_t B) noexcept {
 }
 ```
 
-A 64×64→128 bit multiply has excellent avalanche properties. The XOR of both halves ensures information from both inputs propagates throughout. This is well-studied math. I just use it.
+A 64×64→128 bit multiply has excellent avalanche properties: each input bit affects many output bits. The XOR of both 64-bit halves is crucial - it ensures entropy from the high bits (which contain information about large-magnitude products) mixes with the low bits (which preserve fine-grained patterns). Without this recombination, you'd lose half the information. This is well-studied math. I just use it.
 
-**Size-Specific Optimizations:**
+![Instruction efficiency: multiply vs AES](/images/mirror-hash-instructions.png)
+*Per 16 bytes of mixing: AES uses fewer instructions and cycles than 128-bit multiply. On Apple Silicon, AESE+AESMC fuse into a single ~2-cycle operation.*
 
-Here's where the benchmarking comes in. I partitioned inputs by size and optimized each range separately:
+### ARM64 with Hardware AES
 
+On ARM64 processors with AES crypto extensions (Apple Silicon, AWS Graviton), mirror_hash uses a hybrid strategy:
+
+| Size | rapidhash | mirror_hash | vs rapidhash |
+|------|-----------|-------------|--------------|
+| 8B   | 1.34 ns   | 1.73 ns     | -22% (dispatch overhead) |
+| 32B  | 1.87 ns   | 1.88 ns     | ~even (uses rapidhashNano) |
+| 64B  | 2.51 ns   | **2.41 ns** | +4% |
+| 128B | 4.17 ns   | **3.47 ns** | +20% |
+| 512B | 11.87 ns  | **5.89 ns** | +101% |
+| 1KB  | 20.55 ns  | **9.69 ns** | +112% |
+| 4KB  | 79.88 ns  | **32.59 ns** | +145% |
+| 8KB  | 151.39 ns | **61.58 ns** | +146% |
+
+![Throughput comparison: mirror_hash vs rapidhash vs GxHash](/images/mirror-hash-throughput.png)
+*Throughput across input sizes. Small inputs (8-16B) have ~22% overhead from dispatch logic, while 24-32B is roughly even. From 33-128B, mirror_hash wins ~93% of sizes with ~20% average speedup. Above 128B, 8-way AES kicks in (67-146% faster, with 100%+ at 512B and above).*
+
+**Why is AES faster for medium inputs?** ARM64's AESE+AESMC instructions can mix 16 bytes in ~2 cycles using dedicated silicon. By comparison, the 128-bit multiply at the heart of rapidhash has data dependencies that limit throughput - each multiply must wait for the previous one. AES operations are independent, so we can run 4 or 8 of them in parallel on separate data lanes while the CPU's execution units stay busy.
+
+**Why not use AES for everything?** AES has setup overhead (loading keys, initializing state vectors) that dominates when you're only hashing 8 bytes. For tiny inputs, the dispatch logic to choose between code paths adds overhead - rapidhashNano is fast, but calling it through mirror_hash's size-checking dispatch costs ~22% at 8-16 bytes.
+
+The hybrid approach:
+- **0-32 bytes**: rapidhashNano (AES setup overhead not amortized for tiny inputs)
+- **33-128 bytes**: Single-state AES with 32-byte unrolling and overlapping read (~20% faster than rapidhash on average, wins 93% of sizes)
+- **129-512B**: 8-way unrolled AES (67-100% faster as parallelism amortizes)
+- **512B-8KB**: Full 8-way AES acceleration (100-146% faster than rapidhash)
+- **>8KB**: rapidhash (memory bandwidth dominates)
+
+**The 33-128 byte range uses an optimized single-state approach.** Instead of 4-way parallel processing (which has setup overhead), mirror_hash v2.1 uses 32-byte unrolled processing with overlapping reads for partial blocks. This eliminates the expensive `memcpy` that plagued earlier versions. Measured results:
+
+| Size | Winner | Speedup |
+|------|--------|---------|
+| 48B | mirror_hash | +9% |
+| 64B | mirror_hash | +4% |
+| 80B | mirror_hash | +24% |
+| 96B | mirror_hash | +12% |
+| 112B | mirror_hash | +31% |
+| 128B | mirror_hash | +20% |
+
+mirror_hash wins consistently across the 33-128 byte range regardless of alignment.
+
+![Speedup of mirror_hash vs rapidhash](/images/mirror-hash-speedup.png)
+*mirror_hash speedup at key sizes. Green = mirror_hash wins, Blue = rapidhash wins. Small inputs (8-16B) show dispatch overhead. From 48B onward, AES acceleration provides consistent wins.*
+
+![Latency comparison: small vs large inputs](/images/mirror-hash-latency.png)
+*Left: Small inputs show dispatch overhead at 8-16B, roughly even at 24-32B. Right: Large inputs (128B-8KB) show AES acceleration dominating with 18-146% speedups.*
+
+### Why mirror_hash Beats GxHash at Large Inputs
+
+Wait, mirror_hash beats GxHash by 23% at 8KB? They both use hardware AES. What's going on?
+
+The difference comes down to **instruction count per compression step**. Looking at the actual assembly:
+
+**GxHash's fast compression (4 instructions):**
+```asm
+movi  v2.2d, #0           ; create zero vector
+aese  v0.16b, v2.16b      ; AESE with zero key
+aesmc v0.16b, v0.16b      ; MixColumns
+eor   v0.16b, v0.16b, v1  ; XOR with input b
 ```
-0-3 bytes:    Branchless byte packing
-4-8 bytes:    Overlapping 32-bit reads
-9-16 bytes:   Overlapping 64-bit reads
-17-48 bytes:  Progressive mixing
-49-96 bytes:  4-way parallel accumulators
-97B-128KB:    6-way parallel mixing with unrolled loops
->128KB:       Weak accumulation + strong finalization
+
+**mirror_hash's fast compression (2 instructions):**
+```asm
+aese  v0.16b, v1.16b      ; AESE with b as key
+aesmc v0.16b, v0.16b      ; MixColumns
 ```
 
-### Overlapping Reads
+The key insight: ARM64's `AESE` instruction incorporates the key XOR into the operation. GxHash does `AESE(a, 0)` then `XOR(result, b)` as separate steps. mirror_hash does `AESE(a, b)` directly, saving two instructions per compression.
 
-For inputs like 5 bytes, we read bytes 0-3 and bytes 1-4. They overlap, but that's fine: we're hashing, not parsing.
+At 8KB, we do 64 iterations of 128-byte blocks, with 7 fast compressions per iteration:
+- **GxHash**: 64 × 7 × 4 = **1792 instructions**
+- **mirror_hash**: 64 × 7 × 2 = **896 instructions**
+
+That's 50% fewer instructions for the fast compression step alone.
+
+There's also a secondary factor: **key loading**. GxHash loads keys inside its compression function on every call. mirror_hash loads keys once before the loop and keeps them in NEON registers:
 
 ```cpp
-// 4-8 bytes: Read from start and end, they might overlap
-template<std::size_t N>
-inline uint64_t hash_4_8(const void* data) noexcept {
-    const auto* p = static_cast<const uint8_t*>(data);
-    uint64_t a = read32(p);
-    uint64_t b = read32(p + N - 4);  // Overlaps if N < 8
-    return mix(a ^ S[1], b ^ (BASE_SEED ^ N));
+// GxHash: loads keys every time
+static inline state compress(state a, state b) {
+    uint8x16_t k1 = vld1q_u32(keys_1);  // Load from memory
+    uint8x16_t k2 = vld1q_u32(keys_2);  // Load from memory
+    // ... use k1, k2
+}
+
+// mirror_hash: keys loaded once, passed as parameters
+uint8x16_t k1 = vld1q_u8(KEY1);  // Once before loop
+uint8x16_t k2 = vld1q_u8(KEY2);
+while (len >= 128) {
+    hash = compress_full(hash, v0, k1, k2);  // k1, k2 in registers
 }
 ```
 
-Note that in this template, **N is a compile-time constant**. There are no runtime branches here. The compiler generates specialized code for each size. The overlapping reads technique is primarily about **code simplicity**: one template handles the entire 4-8 byte range elegantly.
+For 8KB, that's 64 × 2 = 128 extra memory loads avoided.
 
-This pattern matters more in the runtime hash function (`hash(const void* key, std::size_t len, ...)`) where `len` is unknown at compile time. There, overlapping reads avoid branching on the exact size within a range.
+**Measured results** (ARM64, native Docker):
+- GxHash-style: 96.84 ns
+- mirror_hash-style: 79.08 ns
+- **Speedup: +22.5%**
 
-<p align="center">
-<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/master/assets/images/mirror_hash/chart_overlapping_reads.svg" alt="Small Data Performance Chart" />
-</p>
+The full profiling is in [profiling/aes_deep_analysis.cpp](https://github.com/FranciscoThiesen/mirror_hash/blob/main/profiling/aes_deep_analysis.cpp).
 
-**Where does time go?** The flamegraph below shows the time distribution. With compile-time known sizes, we eliminate the size-check branches entirely:
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/master/assets/images/mirror_hash/flamegraph_small.svg" alt="Small Data Flamegraph" />
-</p>
-
-### Parallel Accumulators: Exploiting Instruction-Level Parallelism
-
-Modern CPUs can perform multiple multiplications at the same time, but only if there are no data dependencies between them. A single chain of `mix()` calls forces the CPU to wait:
-
-```cpp
-// Each mix() waits for the previous one - serial execution
-h = mix(h, read64(p));
-h = mix(h, read64(p + 8));   // Must wait for previous mix
-h = mix(h, read64(p + 16));  // Must wait again
-```
-
-With independent accumulators, the CPU can issue all multiplications simultaneously:
-
-```cpp
-// 4 independent multiplication chains - CPU executes in parallel
-uint64_t a = mix(read64(p), read64(p + 32));
-uint64_t b = mix(read64(p + 8), read64(p + 40));
-uint64_t c = mix(read64(p + 16), read64(p + 48));
-uint64_t d = mix(read64(p + 24), read64(p + 56));
-
-// Combine at the end
-return mix(mix(a, c), mix(b, d));
-```
-
-I tried 2-way, 4-way, 6-way, and 8-way parallelism. 4-way won for medium sizes; 6-way won for larger inputs. The numbers came from benchmarks, not theory.
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/master/assets/images/mirror_hash/chart_parallel_accumulators.svg" alt="Parallel Accumulators Performance Chart" />
-</p>
-
-**Time distribution:** With 6-way parallelism, the CPU can execute multiple `mix()` operations simultaneously instead of waiting for each one to complete:
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/master/assets/images/mirror_hash/flamegraph_medium.svg" alt="Medium Data Flamegraph" />
-</p>
-
-### The 50% Bulk Improvement: Weak Accumulation + Strong Finalization
-
-This is where the biggest gain comes from. For inputs larger than 128KB, even parallel `mix()` calls become a bottleneck. Here's why:
-
-The `mix()` function performs a **128-bit multiply** (64×64→128 bits), then XORs the two halves. On modern CPUs, this takes about **7 cycles**. For bulk data, we're calling it millions of times.
-
-The insight: **what if we used a cheaper operation during the main loop, then compensated with a thorough finalization?**
-
-```cpp
-// The "cheap" accumulator: ~3-4 cycles per block
-inline uint64_t cheap_acc(uint64_t acc, uint64_t a, uint64_t b) noexcept {
-    return acc * 0x9e3779b97f4a7c15ULL + (a ^ b);
-}
-```
-
-This is just a 64-bit multiply-add, half the work of `mix()`. The constant `0x9e3779b97f4a7c15` is derived from the [golden ratio](https://probablydance.com/2018/06/16/fibonacci-hashing-the-optimization-that-the-world-forgot-or-a-better-alternative-to-integer-modulo/). Specifically, it's `floor(2^64 / φ)` where φ is the golden ratio. This constant is also used in the [Linux kernel's hash functions](https://github.com/torvalds/linux/blob/master/include/linux/hash.h) and provides excellent bit dispersion.
-
-The trick is that we run **8 independent accumulators** in parallel, processing 128 bytes per iteration:
-
-```cpp
-while (i >= 128) {
-    __builtin_prefetch(p + 256, 0, 3);  // Hide memory latency
-    acc0 = cheap_acc(acc0, read64(p), read64(p + 8));
-    acc1 = cheap_acc(acc1, read64(p + 16), read64(p + 24));
-    acc2 = cheap_acc(acc2, read64(p + 32), read64(p + 40));
-    acc3 = cheap_acc(acc3, read64(p + 48), read64(p + 56));
-    acc4 = cheap_acc(acc4, read64(p + 64), read64(p + 72));
-    acc5 = cheap_acc(acc5, read64(p + 80), read64(p + 88));
-    acc6 = cheap_acc(acc6, read64(p + 96), read64(p + 104));
-    acc7 = cheap_acc(acc7, read64(p + 112), read64(p + 120));
-    p += 128;
-    i -= 128;
-}
-```
-
-Why 8-way? The CPU can execute all 8 multiplications simultaneously because there are no dependencies between `acc0`-`acc7`. We're processing 128 bytes per ~4 cycles instead of ~56 cycles (8 × 7 cycles for sequential `mix()`).
-
-The `__builtin_prefetch` tells the CPU to start fetching the next cache line before we need it, hiding memory latency.
-
-**But doesn't this weaken the hash quality?** Yes, the per-block mixing is weaker. Let me explain these terms:
-
-- **Per-block mixing** is the operation applied to each chunk of input data as you iterate through it. Strong per-block mixing ensures that even small changes in one block affect the accumulator significantly. Our `cheap_acc` uses a simple multiply-add, which is fast but doesn't fully scramble the bits.
-
-- **Finalization** is the final step after processing all input blocks. It takes the accumulated state and produces the final hash value. Strong finalization ensures good [avalanche](https://en.wikipedia.org/wiki/Avalanche_effect), where changing a single input bit flips approximately 50% of output bits.
-
-The insight is that you can trade off between these two: use cheap per-block mixing to maximize throughput, then apply expensive finalization once at the end. That's exactly what we do with a **triple-mix finalization**:
-
-```cpp
-// Combine all 8 accumulators
-uint64_t h = acc0 ^ acc1 ^ acc2 ^ acc3 ^ acc4 ^ acc5 ^ acc6 ^ acc7;
-h ^= len;
-
-// Strong finalization: three full mix() calls
-h = mix(h ^ S[0], S[1]);
-h = mix(h ^ S[2], S[3]);
-h = mix(h ^ S[4], S[5] ^ len);
-```
-
-Three `mix()` calls provide excellent avalanche: every input bit affects every output bit. This is only 21 cycles of overhead, amortized over potentially gigabytes of data.
-
-**The result:** ~50% faster than rapidhash for inputs >128KB, while still passing all SMHasher quality tests.
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/master/assets/images/mirror_hash/chart_bulk_data.svg" alt="Bulk Data Performance Chart" />
-</p>
-
-**Where does the 50% come from?** The flamegraph tells the story. The expensive 128-bit multiply dominates rapidhash. By switching to a cheaper 64-bit multiply-add for the main loop, we cut processing time nearly in half:
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/master/assets/images/mirror_hash/flamegraph_bulk.svg" alt="Bulk Data Flamegraph" />
-</p>
+See [benchmarks/gxhash_comparison.cpp](https://github.com/FranciscoThiesen/mirror_hash/blob/main/benchmarks/gxhash_comparison.cpp) for the full benchmark. All measurements from an M3 Max MacBook Pro.
 
 ## Quality Validation: SMHasher
 
 Quality matters as much as speed. A fast hash that produces collisions is useless.
 
-We validate using the **official [SMHasher](https://github.com/rurban/smhasher) test suite**, the canonical benchmark for non-cryptographic hash functions. It runs dozens of statistical tests:
+mirror_hash passes the full [SMHasher](https://github.com/rurban/smhasher) test suite - the canonical hash function quality benchmark. This isn't a subset or simplified version; it's the real thing, taking 30+ minutes to run all tests:
 
-| Test | What It Checks |
-|------|----------------|
-| **Avalanche** | Each input bit affects ~50% of output bits |
-| **Sparse** | Inputs with few set bits don't collide |
-| **Permutation** | Reordered bytes produce different hashes |
-| **Cyclic** | Rotated inputs don't correlate |
-| **TwoBytes** | Two-byte variations distribute uniformly |
-| **Text** | ASCII patterns don't collide |
-| **MomentChi2** | Statistical distribution is uniform |
+```bash
+cd smhasher_upstream/build
+./SMHasher mirror_hash_unified
+```
 
-**mirror_hash passes all SMHasher tests:**
+**Key test results:**
 
-| Test | Result |
-|------|--------|
-| Sanity | PASS |
-| Avalanche | PASS (worst bias: 0.77%) |
-| Keyset Sparse | PASS |
-| Keyset Permutation | PASS |
-| Keyset Window | PASS |
-| Keyset Cyclic | PASS |
-| Keyset TwoBytes | PASS |
-| Keyset Text | PASS |
-| MomentChi2 | Great |
-| Prng | PASS |
-| BadSeeds | PASS |
+| Test Category | Result |
+|---------------|--------|
+| **Sanity checks** | PASS |
+| **Avalanche** | All bit sizes show ~50% flip rate |
+| **Sparse keys** | No collisions across all key sizes |
+| **Permutation** | No collisions in combination tests |
+| **Cyclic collisions** | PASS |
+| **TwoBytes** | PASS |
+| **Text** | PASS |
+| **Zeroes** | PASS |
+| **Seed** | PASS |
+| **MomentChi2** | "Great" |
+| **BadSeeds** | 0x0 PASS |
+| **Prng** | PASS |
 
-To run SMHasher yourself, see the `smhasher/` directory in the repository for integration instructions.
+The hash is integrated directly into SMHasher's source tree (`smhasher_upstream/`), so you can run the tests yourself.
 
 ## Benchmarks
 
-### Trivially Copyable Structs (Fast Path)
-
-These benchmarks focus on **trivially copyable structs**: types where all members are primitive types (int, float, etc.) with no pointers, strings, or containers. For these types, mirror_hash uses the fast path: hashing the struct as a contiguous block of bytes.
-
-Tested on ARM64 (Apple Silicon M3 Max), Clang 21, `-O3 -march=native`:
-
-| Size | mirror_hash::fast vs rapidhash |
-|------|--------------------------------|
-| 4-16B | +6% faster |
-| 128B | +16% faster |
-| 512B-64KB | +3-4% faster |
-| 128KB+ | **+50% faster** |
-
-**Throughput:** ~58 GB/s bulk, ~10.7 cycles/hash for small keys.
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/FranciscoThiesen/franciscothiesen.github.io/master/assets/images/mirror_hash/chart_summary.svg" alt="Performance Summary Chart" />
-</p>
-
-### What is "Trivially Copyable"?
-
-A type is **trivially copyable** if it can be safely copied by just copying its raw bytes (like with `memcpy`). The C++ standard defines this precisely, but intuitively:
-
-**Trivially copyable:**
-- Primitive types: `int`, `double`, `char`, `bool`, pointers
-- C-style arrays of trivially copyable types
-- Structs/classes with only trivially copyable members and no custom copy/move constructors
-
-**NOT trivially copyable:**
-- `std::string` (has internal pointer to heap-allocated buffer)
-- `std::vector` (has pointer to dynamic array)
-- `std::unique_ptr`, `std::shared_ptr` (manage heap resources)
-- Any class with virtual functions or custom copy semantics
-
-You can check at compile time with `std::is_trivially_copyable_v<T>`.
-
-### Non-Trivially Copyable Types
-
-For structs containing `std::string`, `std::vector`, smart pointers, or other non-trivially copyable types, mirror_hash uses **member-by-member hashing**: iterating over each member using `template for` and hashing them recursively.
-
-This is the only correct approach:
-
-```cpp
-struct Person {
-    std::string name;   // 32 bytes (SSO buffer + pointer + size + capacity)
-    int age;            // 4 bytes
-};
-// You CAN'T hash raw bytes here - the string contains pointers!
-// Two identical strings at different addresses would hash differently.
-```
-
-**What does mirror_hash generate?** Essentially what you'd write by hand:
-
-```cpp
-// What mirror_hash generates (conceptually):
-size_t hash(const Person& p) {
-    size_t h = std::hash<std::string>{}(p.name);  // Hash string contents
-    h = combine(h, std::hash<int>{}(p.age));       // Combine with age
-    return h;
-}
-```
-
-**Measured times** (ARM64, Clang 21, `-O3`):
+How fast is the reflection-based approach? Here are measured times on ARM64 (M3 Max, Clang 21, `-O3`):
 
 | Struct Type | Time | Notes |
 |-------------|------|-------|
-| `Point{int, int}` | ~0.3 ns | Trivially copyable, raw bytes |
-| `Person{string(5), int}` | ~2.5 ns | String + int |
-| `Person{string(32), int}` | ~1.0 ns | Longer string (still fast) |
-| `Data{vector(5), string}` | ~15 ns | Must iterate 5 elements |
-| `Data{vector(100), string}` | ~45 ns | Must iterate 100 elements |
+| `Point{int, int}` | ~1.7 ns | Trivially copyable, raw bytes |
+| `Person{string(5), int}` | ~4.6 ns | Short string (SSO, inline storage) |
+| `Person{string(32), int}` | ~6.1 ns | Longer string (heap-allocated, 32% slower) |
+| `Data{vector(5), string}` | ~8 ns | Must iterate 5 elements |
+| `Data{vector(100), string}` | ~20 ns | Must iterate 100 elements |
 
 The time scales with the actual work required:
 - **String hashing** depends on string length (though [SSO, or Small String Optimization](https://devblogs.microsoft.com/oldnewthing/20240510-00/?p=109742), helps for short strings by storing them inline)
-- **Container hashing** iterates over all elements. There's no shortcut
+- **Container hashing** iterates over all elements; there's no shortcut
 - **Member count** adds overhead for the combine operations
 
 This isn't "overhead" in the sense of wasted work. It's the inherent cost of correctly hashing dynamic data. A hand-written hash function would have the same cost. The value of mirror_hash is that you don't have to write it yourself.
 
 Run the benchmark yourself:
 ```bash
-./build/trivial_vs_nontrivial
+./build/benchmark
 ```
-
-## What About Existing Solutions?
-
-Fair question: do we really need C++26 reflection for this? There are existing approaches:
-
-**[Boost.Describe](https://www.boost.org/doc/libs/1_87_0/libs/describe/doc/html/describe.html):** Requires annotating each struct with a macro:
-```cpp
-struct Point { int x, y; };
-BOOST_DESCRIBE_STRUCT(Point, (), (x, y))  // Manual member list
-```
-Works well, but you must remember to update the macro when adding members. Miss one, and you get silent bugs.
-
-**[Cista](https://github.com/felixguendling/cista):** Requires a `cista_members()` function in each type:
-```cpp
-struct Point {
-    int x, y;
-    auto cista_members() { return std::tie(x, y); }  // Manual
-};
-```
-Same issue: manual enumeration that can drift out of sync.
-
-**[Abseil Hash](https://abseil.io/docs/cpp/guides/hash):** Requires a friend function:
-```cpp
-struct Point {
-    int x, y;
-    template<typename H>
-    friend H AbslHashValue(H h, const Point& p) {
-        return H::combine(std::move(h), p.x, p.y);  // Manual
-    }
-};
-```
-
-The pattern is clear: all existing solutions require **manual member enumeration**. You're still writing boilerplate, just in a different form. Add a member, forget to update the hash, get subtle bugs.
-
-**mirror_hash is different.** With C++26 reflection, the compiler provides the member list. There's nothing to keep in sync:
-
-```cpp
-struct Point { int x, y, z; };  // Add z, hash automatically includes it
-auto h = mirror_hash::hash(Point{1, 2, 3});  // Just works
-```
-
-This is the fundamental advantage: **true automatic generation** with zero annotation overhead.
 
 ## The Catch: You Need a Special Compiler (for now)
 
@@ -572,6 +504,17 @@ clang++ -std=c++2c -freflection -freflection-latest mycode.cpp
 ```
 
 It's experimental. It might break. But it's a glimpse of C++'s future, and that future involves a lot less boilerplate.
+
+## When NOT to Use This
+
+mirror_hash isn't always the right choice:
+
+- **Cryptographic hashing**: Use SHA-256, BLAKE3, etc. mirror_hash is for hash tables, not security.
+- **Custom hash semantics**: If only some fields should contribute to the hash (e.g., skip cached values), you need manual control.
+- **Cross-platform determinism**: Hash values may differ between platforms or compiler versions. Don't persist them.
+- **Pre-C++26 codebases**: Requires experimental compiler support that may not be production-ready.
+
+For these cases, stick with hand-written `std::hash` specializations or established libraries.
 
 ## Try It Out
 
@@ -585,7 +528,15 @@ cd mirror_hash
 
 ## Conclusion
 
-The days of manually writing `std::hash` specializations are numbered. C++26 reflection gives us the tools to generate them automatically, with zero runtime overhead and optimal performance.
+What started as "let's avoid writing `std::hash` boilerplate" turned into a journey through:
+
+1. C++26 reflection and `template for`
+2. Trivially copyable optimizations
+3. 128-bit multiply mixing (rapidhash)
+4. Hardware AES acceleration
+5. Memory bandwidth analysis
+
+The days of manually writing `std::hash` specializations are numbered. C++26 reflection gives us the tools to generate them automatically, and with the right platform-specific optimizations, performance can be excellent too.
 
 For years, we've written code that the compiler could infer. We've manually enumerated members that the compiler already knows about. P2996 finally bridges that gap.
 
@@ -601,7 +552,7 @@ Thanks to Wyatt Childers, Peter Dimov, Dan Katz, Barry Revzin, Andrew Sutton, Fa
 
 Special thanks to Dan Katz for maintaining the clang-p2996 branch. Without a working compiler, this would all be theoretical.
 
-On the hashing side: thanks to Wang Yi for creating wyhash, which has become the foundation of modern fast hashing. Thanks to Nicolas De Carli for rapidhash. In our benchmarks, it was the fastest hash function we tested, which is why we use it as our primary comparison point. And thanks to Yann Collet for xxHash, which has been battle-tested for over a decade and set the standard for what a high-quality hash function should be.
+On the hashing side: thanks to Wang Yi for creating wyhash, which has become the foundation of modern fast hashing. Thanks to Nicolas De Carli for rapidhash, the fastest portable hash function I've tested. Thanks to ogxd for GxHash, which showed me how to use hardware AES for hashing and whose 8-way unrolling strategy mirror_hash adapts. And thanks to Yann Collet for xxHash, which has been battle-tested for over a decade and set the standard for what a high-quality hash function should be.
 
 ## References
 
@@ -610,5 +561,6 @@ On the hashing side: thanks to Wang Yi for creating wyhash, which has become the
 - [Bloomberg clang-p2996](https://github.com/bloomberg/clang-p2996): Experimental compiler with reflection support
 - [Trip Report: June 2025 ISO C++ Meeting](https://herbsutter.com/2025/06/21/trip-report-june-2025-iso-c-standards-meeting-sofia-bulgaria/): When reflection was voted into C++26
 - [SMHasher](https://github.com/rurban/smhasher): The canonical hash quality test suite
-- [rapidhash](https://github.com/Nicoshev/rapidhash): The hash algorithm that mirror_hash::fast builds upon
+- [rapidhash](https://github.com/Nicoshev/rapidhash): The hash algorithm that mirror_hash builds upon
 - [wyhash](https://github.com/wangyi-fudan/wyhash): The foundation of modern fast hashing
+- [GxHash](https://github.com/ogxd/gxhash): Hardware AES-accelerated hashing that inspired the ARM64 optimization
