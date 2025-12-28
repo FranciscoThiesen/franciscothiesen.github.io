@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "C++26 Reflection: Never Write std::hash Again"
+title: "std::hash Boilerplate Is Dead"
 tags: Modern C++, Hashing, Reflection, C++26, Performance
 ---
 
@@ -364,7 +364,22 @@ The hybrid approach:
 - **512B-8KB**: Full 8-way AES acceleration (100-146% faster than rapidhash)
 - **>8KB**: rapidhash (memory bandwidth dominates)
 
-**The 33-128 byte range uses an optimized single-state approach.** Instead of 4-way parallel processing (which has setup overhead), mirror_hash v2.1 uses 32-byte unrolled processing with overlapping reads for partial blocks. This eliminates the expensive `memcpy` that plagued earlier versions. Measured results:
+**The 33-128 byte range uses an optimized single-state approach.** Instead of 4-way parallel processing (which has setup overhead), mirror_hash v2.1 uses 32-byte unrolled processing with a single accumulator.
+
+For handling the 1-15 byte remainder after aligned blocks, mirror_hash uses an **overlapping read**: instead of copying the remaining bytes to a zeroed buffer, it reads the last 16 bytes of the input—which may overlap with already-processed data:
+
+```cpp
+// Traditional approach (slower):
+alignas(16) uint8_t buf[16] = {0};  // stack alloc + zero init
+memcpy(buf, ptr, remainder_len);     // copy 1-15 bytes
+buf[15] = remainder_len;             // encode length
+
+// Overlapping read (faster):
+uint8x16_t data = vld1q_u8(end - 16);           // single 16-byte load
+data = veorq_u8(data, vdupq_n_u8(remainder_len)); // XOR length into every byte
+```
+
+The XOR with remainder length ensures different-length inputs hash differently, even when they share the overlapping bytes. This avoids stack allocation, zero-initialization, and the variable-length copy—trading them for a single aligned load. Measured results:
 
 | Size | Winner | Speedup |
 |------|--------|---------|
