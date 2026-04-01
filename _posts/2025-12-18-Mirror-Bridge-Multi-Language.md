@@ -8,7 +8,9 @@ tags: Modern C++, Python, Lua, JavaScript, Bindings, Reflection, C++26, Performa
 
 ---
 
-![Mandelbrot Zoom Animation](/images/mandelbrot_zoom.gif)
+<video autoplay loop muted playsinline style="max-width:100%">
+  <source src="/images/mandelbrot_zoom.mp4" type="video/mp4">
+</video>
 *The Mandelbrot set, rendered identically by Python, Lua, and JavaScript calling the same C++ engine*
 
 ---

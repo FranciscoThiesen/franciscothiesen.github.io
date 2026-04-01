@@ -5,21 +5,18 @@
 
     {% include meta.html %}
 
-    <!--[if lt IE 9]>
-      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" crossorigin>
+    {% if page.usemathjax %}<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>{% endif %}
 
     <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
-
-    <!-- Created with Jekyll Now - http://github.com/barryclark/jekyll-now -->
   </head>
 
   <body>
     <div class="wrapper-masthead">
       <div class="container">
         <header class="masthead clearfix">
-          <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" /></a>
+          <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" width="70" height="70" alt="{{ site.name }}" /></a>
 
           <div class="site-info">
             <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
@@ -50,11 +47,16 @@
       </div>
     </div>
 
-    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    {% if page.usemathjax %}
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    {% endif %}
     {% include analytics.html %}
 
     <script>
       (function() {
+        // Lazy-load all images inside post content
+        document.querySelectorAll('#main img').forEach(function(img) { img.loading = 'lazy'; });
+
         const toggle = document.getElementById('theme-toggle');
         const html = document.documentElement;
         const STORAGE_KEY = 'theme-preference';

@@ -16,19 +16,10 @@ avatar: https://avatars.githubusercontent.com/u/8302742?v=4
 
 # Includes an icon in the footer for each username you enter
 footer-links:
-  dribbble:
   email: franciscogthiesen@gmail.com
-  facebook:
-  flickr:
   github: FranciscoThiesen
-  instagram:
   linkedin: https://www.linkedin.com/in/francisco-geiman-thiesen-0046a9b0/
-  pinterest:
-  rss: # just type anything here for a working RSS icon
-  twitter: 
-  stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
-  youtube: # channel/<your_long_string> or user/<user-name>
-  googleplus: # anything in your profile username that comes after plus.google.com/
+  rss: true
 
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts
@@ -69,7 +60,7 @@ kramdown:
 
 # Set the Sass partials directory, as we're using @imports
 sass:
-  style: :expanded # You might prefer to minify using :compressed
+  style: :compressed
 
 # Use the following plug-ins
 gems:

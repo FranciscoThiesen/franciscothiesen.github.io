@@ -29,9 +29,12 @@ vertices in the graph
 - [Kruskal](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
 - [Prim](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
 
-| ![_config.yml]({{ site.baseurl }}/images/boruvka.gif) |
-|:--:|
-| Cute [Animation of Borůvka algorithm](https://commons.wikimedia.org/wiki/File:Boruvka%27s_algorithm_(Sollin%27s_algorithm)_Anim.gif). |  
+<figure style="text-align:center">
+  <video autoplay loop muted playsinline style="max-width:100%">
+    <source src="/images/boruvka.mp4" type="video/mp4">
+  </video>
+  <figcaption>Cute <a href="https://commons.wikimedia.org/wiki/File:Boruvka%27s_algorithm_(Sollin%27s_algorithm)_Anim.gif">Animation of Borůvka algorithm</a>.</figcaption>
+</figure>
 
 An algorithm with expected complexity of $$O(m + n)$$ belongs to a complexity class
 that grows slower than the class offered by the classical algorithms listed
