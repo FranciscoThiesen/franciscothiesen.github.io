@@ -22,15 +22,17 @@ for filename in filenames:
     crawl = False
     for line in f:
         if crawl:
-            current_tags = line.strip().split(':') 
+            current_tags = line.strip().split(':', 1)
             if current_tags[0] == 'tags':
-                if (current_tags[1].strip().startswith('[')):
-                    clean_tag = ''.join(c for c in current_tags[1] if c not in '[]')
+                tag_str = current_tags[1].strip()
+                if tag_str.startswith('['):
+                    clean_tag = ''.join(c for c in tag_str if c not in '[]')
                     list_tags = map(str.strip, clean_tag.split(','))
-                    total_tags.extend(list_tags)
-                else: 
-                    list_tags = map(str.strip, current_tags[1].strip().split())
-                    total_tags.extend(list_tags)
+                elif ',' in tag_str:
+                    list_tags = map(str.strip, tag_str.split(','))
+                else:
+                    list_tags = map(str.strip, tag_str.split())
+                total_tags.extend(t for t in list_tags if t)
                 crawl = False
                 break
         if line.strip() == '---':
