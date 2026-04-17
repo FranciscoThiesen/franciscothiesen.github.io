@@ -11,7 +11,6 @@ permalink: /about/
         - Designed and implemented a system for tracking optimization gaps across models and monitoring regressions
         - Optimized triton kernels targeting inference for several LLMs
         - Made a few LLVM upstream contributions, like [this one](https://github.com/llvm/llvm-project/commit/3e746bd8fb6aece3c6d56dae4a9a7f0a7ec61859)
-        - Currently exploring the autotuners space
 
 - Spoke at CppCon 2025 with Daniel Lemire — [*Reflection-based JSON in C++ at Gigabytes per Second*](https://www.youtube.com/watch?v=Mcgk3CxHYMs)
 
