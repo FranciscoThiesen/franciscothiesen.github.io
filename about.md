@@ -22,8 +22,7 @@ permalink: /about/
     - [Hackerrank](https://www.hackerrank.com/fthiesen) — Top 1% in rating for Algorithms contest
 
 - A few of my open-source contributions and personal projects
-    - Top 5 contributor of [simdjson](https://github.com/simdjson/simdjson)
-        - Implemented serialization and deserialization based on the reflection for C++26 proposal
+    - Top 5 contributor of [simdjson](https://github.com/simdjson/simdjson/graphs/contributors?selectedMetric=commits)
     - Minimum Spanning Trees in Expected Linear Time — [KKT Algorithm Implementation](https://github.com/FranciscoThiesen/karger-klein-tarjan)
     - Contribution to Helion autotuner — [added DE-Surrogate that led to 6% better optimal configs in less time than previous methods](https://github.com/pytorch/helion/pull/1096)
     - [mirror_bridge](https://github.com/FranciscoThiesen/mirror_bridge) for generating Python/JS/Lua bindings for C++ code
