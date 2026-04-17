@@ -10,26 +10,37 @@
 
     <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
     <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
+
+    <script>
+      // Apply stored theme before first paint to avoid light-flash on dark default.
+      (function() {
+        try {
+          if (localStorage.getItem('theme-preference') === 'light') {
+            document.documentElement.classList.add('light-mode');
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
 
   <body>
     <div class="wrapper-masthead">
       <div class="container">
-        <header class="masthead clearfix">
-          <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" width="70" height="70" alt="{{ site.name }}" /></a>
+        <header class="masthead">
+          <div class="prompt-bar" aria-hidden="true"><span class="path">~/chico.dev</span><span class="sigil">$</span><span class="cmd">whoami</span><span class="cursor"></span></div>
 
-          <div class="site-info">
-            <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
-            <p class="site-description">{{ site.description }}</p>
+          <div class="identity">
+            <a href="{{ site.baseurl }}/" class="site-avatar"><img src="{{ site.avatar }}" width="60" height="60" alt="{{ site.name }}" /></a>
+            <div class="site-info">
+              <h1 class="site-name"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
+              <p class="site-description">{{ site.description }}</p>
+            </div>
           </div>
 
-          <nav>
-            <a href="{{ site.baseurl }}/">Blog</a>
-            <a href="{{ site.baseurl }}/about">About</a>
-            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
-              <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-            </button>
+          <nav class="site-nav">
+            <a href="{{ site.baseurl }}/">[blog]</a>
+            <a href="{{ site.baseurl }}/about">[about]</a>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">[~]</button>
           </nav>
         </header>
       </div>
@@ -54,56 +65,17 @@
 
     <script>
       (function() {
-        // Lazy-load all images inside post content
+        // Lazy-load all images inside post content (below the fold).
         document.querySelectorAll('#main img').forEach(function(img) { img.loading = 'lazy'; });
 
-        const toggle = document.getElementById('theme-toggle');
-        const html = document.documentElement;
-        const STORAGE_KEY = 'theme-preference';
+        var toggle = document.getElementById('theme-toggle');
+        if (!toggle) return;
+        var html = document.documentElement;
+        var KEY = 'theme-preference';
 
-        function getSystemPreference() {
-          return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
-
-        function getStoredPreference() {
-          return localStorage.getItem(STORAGE_KEY);
-        }
-
-        function setTheme(theme) {
-          html.classList.remove('dark-mode', 'light-mode');
-          if (theme === 'dark') {
-            html.classList.add('dark-mode');
-          } else if (theme === 'light') {
-            html.classList.add('light-mode');
-          }
-        }
-
-        function getCurrentTheme() {
-          const stored = getStoredPreference();
-          if (stored) return stored;
-          return getSystemPreference();
-        }
-
-        // Apply stored preference on load
-        const storedPref = getStoredPreference();
-        if (storedPref) {
-          setTheme(storedPref);
-        }
-
-        // Toggle handler
         toggle.addEventListener('click', function() {
-          const current = getCurrentTheme();
-          const next = current === 'dark' ? 'light' : 'dark';
-          localStorage.setItem(STORAGE_KEY, next);
-          setTheme(next);
-        });
-
-        // Listen for system preference changes
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-          if (!getStoredPreference()) {
-            // Only react to system changes if user hasn't set a preference
-            setTheme(e.matches ? 'dark' : 'light');
-          }
+          var isLight = html.classList.toggle('light-mode');
+          try { localStorage.setItem(KEY, isLight ? 'light' : 'dark'); } catch (e) {}
         });
       })();
     </script>

@@ -1,316 +1,511 @@
 ---
 ---
 
-//
-// IMPORTS
-//
-
 @import "reset";
 @import "variables";
-// Syntax highlighting @import is at the bottom of this file
 
-/**************/
-/* BASE RULES */
-/**************/
-
-html {
-  font-size: 100%;
+//
+// DESIGN TOKENS — terminal (dark) is the default theme.
+// html.light-mode swaps to the "paper terminal" palette.
+//
+:root {
+  --bg:         #0a0a0a;
+  --surface:    #111111;
+  --surface-2:  #161616;
+  --border:     #1f1f1f;
+  --border-hi:  #2a2a2a;
+  --text:       #e5e5e5;
+  --text-2:     #a3a3a3;
+  --dim:        #737373;
+  --muted:      #525252;
+  --accent:     #f97316;
+  --accent-hi:  #fb923c;
+  --cyan:       #22d3ee;
+  --green:      #4ade80;
+  --red:        #f87171;
+  --yellow:     #fbbf24;
+  --violet:     #c084fc;
+  --selection:  rgba(249, 115, 22, 0.22);
 }
 
+html.light-mode {
+  --bg:         #f4eedf;
+  --surface:    #ebe3cf;
+  --surface-2:  #e0d7bd;
+  --border:     #c9bda0;
+  --border-hi:  #a89a7c;
+  --text:       #262015;
+  --text-2:     #4b3f2a;
+  --dim:        #7a6a4e;
+  --muted:      #9c8d6f;
+  --accent:     #a84418;
+  --accent-hi:  #c05520;
+  --cyan:       #0e7490;
+  --green:      #166534;
+  --red:        #991b1b;
+  --yellow:     #854d0e;
+  --violet:     #6b21a8;
+  --selection:  rgba(168, 68, 24, 0.18);
+}
+
+//
+// BASE
+//
+html { font-size: 100%; }
+
 body {
-	background: $white;
-  font: 18px/1.4 $helvetica;
-  color: $darkGray;
+  background: var(--bg);
+  color: var(--text);
+  font-family: $mono;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
 }
 
 .container {
   margin: 0 auto;
-  max-width: 740px;
-  padding: 0 10px;
+  max-width: 760px;
+  padding: 0 20px;
   width: 100%;
 }
 
+::selection     { background: var(--selection); color: var(--text); }
+::-moz-selection{ background: var(--selection); color: var(--text); }
+
+//
+// TYPOGRAPHY
+//
 h1, h2, h3, h4, h5, h6 {
-  font-family: $helveticaNeue;
-  color: $darkerGray;
-  font-weight: bold;
-
-  line-height: 1.7;
-  margin: 1em 0 15px;
-  padding: 0;
-
-  @include mobile {
-    line-height: 1.4;
-  }
+  font-family: $mono;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  margin: 2em 0 0.75em;
+  letter-spacing: -0.015em;
 }
 
-h1 {
-  font-size: 30px;
-  a {
-    color: inherit;
-  }
-}
+h1 { font-size: 22px; }
+h2 { font-size: 18px; }
+h3 { font-size: 16px; }
+h4 { font-size: 15px; color: var(--text-2); }
+h5 { font-size: 14px; color: var(--text-2); }
+h6 { font-size: 13px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.08em; }
 
-h2 {
-  font-size: 24px;
-}
-
-h3 {
-  font-size: 20px;
-}
-
-h4 {
-  font-size: 18px;
-  color: $gray;
-}
-
-p {
-  margin: 15px 0;
-}
+p { margin: 0.9em 0; }
 
 a {
-  color: $blue;
+  color: var(--accent);
   text-decoration: none;
-	cursor: pointer;
-  &:hover, &:active {
-    color: $blue;
-  }
+  border-bottom: 1px solid transparent;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+a:hover, a:focus {
+  color: var(--accent-hi);
+  border-bottom-color: currentColor;
+  outline: 0;
 }
 
-ul, ol {
-  margin: 15px 0;
-  padding-left: 30px;
+ul, ol { margin: 1em 0; padding-left: 1.5em; }
+ul { list-style: none; }
+ul > li { position: relative; }
+ul > li::before {
+  content: "›";
+  position: absolute;
+  left: -1.2em;
+  color: var(--accent);
+  font-weight: 700;
 }
+ol { list-style: decimal; }
+ol > li::marker { color: var(--accent); }
+ol ul, ul ol, ul ul, ol ol { margin: 0.3em 0; }
 
-ul {
-  list-style-type: disc;
-}
+em, i { font-style: italic; color: var(--text-2); }
+strong, b { font-weight: 700; color: var(--text); }
 
-ol {
-  list-style-type: decimal;
-}
-
-ol ul, ul ol, ul ul, ol ol {
-  margin: 0;
-}
-
-ul ul, ol ul {
-  list-style-type: circle;
-}
-
-em, i {
-  font-style: italic;
-}
-
-strong, b {
-  font-weight: bold;
-}
-
-img {
+img, video {
   max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1.2em auto;
+  border: 1px solid var(--border);
 }
 
-// Fixes images in popup boxes from Google Translate
-.gmnoprint img {
-  max-width: none;
+hr {
+  border: 0;
+  border-top: 1px dashed var(--border-hi);
+  margin: 2.2em 0;
 }
 
-.date {
-  font-style: italic;
-  color: $gray;
+blockquote {
+  margin: 1.4em 0;
+  padding: 0.1em 1em;
+  border-left: 2px solid var(--accent);
+  color: var(--text-2);
+  background: var(--surface);
+  font-style: normal;
+  font-size: 14px;
+
+  p { margin: 0.6em 0; }
 }
 
-/* Basic table styling similar to GitHub's Markdown */
+//
+// CODE
+//
+code {
+  font-family: $mono;
+  font-size: 0.92em;
+  padding: 0.1em 0.35em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  word-break: break-word;
+}
+pre {
+  margin: 1.2em 0;
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--accent);
+  overflow: auto;
+  font-size: 13px;
+  line-height: 1.5;
+}
+pre code {
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font-size: inherit;
+}
+
+//
+// TABLES — terminal/monospace feel
+//
 table {
-    width: 100%;
-    max-width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5em 0;
+  font-size: 13px;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
 }
-
+th, td {
+  padding: 0.55em 0.9em;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
 th {
-    background-color: #f6f8fa;
-    border: 1px solid #dfe2e5;
-    padding: 6px 13px;
-    text-align: left;
-    font-weight: bold;
+  color: var(--accent);
+  background: var(--surface);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border-hi);
 }
-
-td {
-    border: 1px solid #dfe2e5;
-    padding: 6px 13px;
-}
-
-tr:nth-child(2n) {
-    background-color: #f6f8fa;
-}
-
-
-// Specify the color of the selection
-::-moz-selection {
-  color: $black;
-  background: $lightGray;
-}
-::selection {
-  color: $black;
-  background: $lightGray;
-}
-
-// Nicolas Gallagher's micro clearfix hack
-// http://nicolasgallagher.com/micro-clearfix-hack/
-.clearfix:before,
-.clearfix:after {
-    content: " ";
-    display: table;
-}
-
-.clearfix:after {
-    clear: both;
-}
-
-/*********************/
-/* LAYOUT / SECTIONS */
-/*********************/
+tr:last-child td { border-bottom: 0; }
+tr:nth-child(2n) td { background: var(--surface); }
 
 //
-// .masthead
+// MASTHEAD
 //
-
 .wrapper-masthead {
-  margin-bottom: 50px;
+  border-bottom: 1px dashed var(--border-hi);
+  margin-bottom: 40px;
+  padding-top: 24px;
 }
 
 .masthead {
-  padding: 20px 0;
-  border-bottom: 1px solid $lightGray;
+  padding-bottom: 20px;
+}
+
+.prompt-bar {
+  font-size: 13px;
+  color: var(--dim);
+  margin-bottom: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .path  { color: var(--cyan); }
+  .sigil { color: var(--accent); margin: 0 0.4em 0 0.2em; }
+  .cmd   { color: var(--text); }
+  .cursor {
+    display: inline-block;
+    width: 0.55em;
+    height: 0.95em;
+    margin-left: 0.15em;
+    background: var(--accent);
+    vertical-align: -0.1em;
+    animation: term-blink 1.05s steps(2, end) infinite;
+  }
+}
+@keyframes term-blink { 50% { opacity: 0; } }
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 
   @include mobile {
+    flex-direction: column;
     text-align: center;
+    gap: 10px;
   }
 }
 
 .site-avatar {
-  float: left;
-  width: 70px;
-  height: 70px;
-  margin-right: 15px;
-
-  @include mobile {
-    float: none;
-    display: block;
-    margin: 0 auto;
-  }
+  flex: 0 0 auto;
+  display: inline-block;
+  line-height: 0;
+  border: 1px solid var(--border-hi);
+  padding: 2px;
+  background: var(--surface);
 
   img {
-    border-radius: 5px;
+    width: 60px;
+    height: 60px;
+    display: block;
+    filter: saturate(0.85);
   }
 }
 
 .site-info {
-  float: left;
-
-  @include mobile {
-    float: none;
-    display: block;
-    margin: 0 auto;
-  }
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .site-name {
   margin: 0;
-  color: $darkGray;
-  cursor: pointer;
-  font-family: $helveticaNeue;
-  font-weight: 300;
-  font-size: 28px;
-  letter-spacing: 1px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+
+  a { color: var(--text); border: 0; }
+  a:hover { color: var(--accent); }
 }
 
 .site-description {
-  margin: -5px 0 0 0;
-  color: $gray;
-  font-size: 16px;
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-2);
 
-  @include mobile {
-    margin: 3px 0;
+  &::before {
+    content: "> ";
+    color: var(--accent);
   }
 }
 
-nav {
-  float: right;
-  margin-top: 23px; // @TODO: Vertically middle align
-  font-family: $helveticaNeue;
-  font-size: 18px;
+.site-nav {
+  margin-top: 16px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 13px;
 
-  @include mobile {
-    float: none;
-    margin-top: 9px;
-    display: block;
-    font-size: 16px;
+  @include mobile { justify-content: center; }
+
+  a, .theme-toggle {
+    color: var(--text-2);
+    border: 0;
+    background: transparent;
+    padding: 2px 8px;
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.12s ease, background 0.12s ease;
+  }
+  a:hover, .theme-toggle:hover {
+    color: var(--accent);
+    background: var(--surface);
   }
 
-  a {
-    margin-left: 20px;
-    color: $darkGray;
-    text-align: right;
-    font-weight: 300;
-    letter-spacing: 1px;
+  .theme-toggle {
+    margin-left: auto;
 
-    @include mobile {
-      margin: 0 10px;
-      color: $blue;
+    @include mobile { margin-left: 4px; }
+  }
+}
+
+//
+// POSTS LIST (homepage)
+//
+.posts > .post {
+  padding: 20px 0;
+  border-bottom: 1px dashed var(--border-hi);
+
+  &:last-child { border-bottom: 0; }
+
+  h1 {
+    font-size: 19px;
+    margin: 0 0 0.5em;
+
+    a { color: var(--text); border: 0; }
+    a:hover { color: var(--accent); }
+
+    &::before {
+      content: "› ";
+      color: var(--accent);
+      font-weight: 700;
+    }
+  }
+
+  .entry {
+    color: var(--text-2);
+    font-size: 14px;
+
+    p { margin: 0.5em 0; }
+  }
+
+  .read-more {
+    display: inline-block;
+    margin-top: 0.6em;
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 0;
+
+    &::before { content: "["; color: var(--dim); margin-right: 0.3em; }
+    &::after  { content: "]"; color: var(--dim); margin-left: 0.3em; }
+    &:hover   { color: var(--accent-hi); }
+  }
+}
+
+//
+// SINGLE POST / PAGE
+//
+.post, .page {
+  > h1:first-of-type {
+    margin-top: 0.2em;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+
+    &::before {
+      content: "# ";
+      color: var(--accent);
     }
   }
 }
 
-//
-// .main
-//
-
-.posts > .post {
-  padding-bottom: 2em;
-  border-bottom: 1px solid $lightGray;
-}
-
-.posts > .post:last-child {
-  padding-bottom: 1em;
-  border-bottom: none;
-}
-
 .post {
-  blockquote {
-    margin: 1.8em .8em;
-    border-left: 2px solid $gray;
-    padding: 0.1em 1em;
-    color: $gray;
-    font-size: 22px;
-    font-style: italic;
+  .date {
+    display: block;
+    margin-top: 3em;
+    padding-top: 1em;
+    border-top: 1px dashed var(--border-hi);
+    font-size: 12px;
+    color: var(--dim);
+    font-style: normal;
+
+    &::before { content: "~ "; color: var(--accent); }
   }
 
   .comments {
-    margin-top: 10px;
-  }
-
-  .read-more {
-    text-transform: uppercase;
-    font-size: 15px;
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px dashed var(--border-hi);
   }
 }
 
+//
+// TAG PAGE
+//
+.tag-page .post-list {
+  margin: 1.5em 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0.5em 0;
+    border-bottom: 1px dashed var(--border);
+    display: flex;
+    gap: 1em;
+    align-items: baseline;
+    justify-content: space-between;
+
+    &::before { content: none; }
+    &:last-child { border-bottom: 0; }
+
+    @include mobile {
+      flex-direction: column;
+      gap: 0.2em;
+    }
+  }
+
+  a { color: var(--text); border: 0; }
+  a:hover { color: var(--accent); }
+  a::before { content: "› "; color: var(--accent); }
+
+  .post-date {
+    color: var(--dim);
+    font-size: 12px;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+//
+// TAG BAR (top of post)
+//
+.post-tags {
+  display: block;
+  font-size: 12px;
+  color: var(--dim);
+  margin-bottom: 1.2em;
+  letter-spacing: 0.02em;
+
+  &::before { content: "tags: "; color: var(--dim); }
+
+  a { border: 0; margin-right: 0.3em; }
+
+  code {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    color: var(--cyan);
+    font-size: 12px;
+
+    &::before { content: "["; color: var(--dim); }
+    &::after  { content: "]"; color: var(--dim); }
+  }
+
+  a:hover code { color: var(--accent); }
+}
+
+//
+// FOOTER
+//
 .wrapper-footer {
-  margin-top: 50px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background-color: $lightGray;
+  margin-top: 60px;
+  padding: 28px 0 36px;
+  border-top: 1px dashed var(--border-hi);
 }
 
-footer {
-  padding: 20px 0;
+.footer {
+  font-size: 12px;
+  color: var(--dim);
   text-align: center;
+  letter-spacing: 0.04em;
+
+  a {
+    display: inline-block;
+    margin: 0 0.25em;
+    padding: 2px 6px;
+    color: var(--text-2);
+    border: 0;
+
+    &:hover { color: var(--accent); background: var(--surface); }
+  }
 }
 
-// Settled on moving the import of syntax highlighting to the bottom of the CSS
-// ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
+//
+// MATHJAX — make it fit the aesthetic (match color to body)
+//
+mjx-container { color: var(--text); }
+mjx-container[display="true"] { margin: 1.2em 0 !important; }
+
 @import "highlights";
-@import "svg-icons";
-@import "dark-mode";
