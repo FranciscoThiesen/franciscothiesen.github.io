@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "mirror_bridge vs Open3D: 25,262 hand-written binding lines → 71 auto-generated"
-tags: Modern C++, Python, Bindings, Reflection, C++26, Open3D, Performance
+title: "Porting Open3D with mirror_bridge: 25,262 hand-written binding lines → 71 auto-generated"
+tags: [Modern C++, Python, Bindings, Reflection, C++26, Open3D, Performance]
 ---
 
 
