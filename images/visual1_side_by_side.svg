@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="'SF Mono', Monaco, Consolas, monospace">
+  <defs>
+    <style>
+      .bg { fill: #1e1e1e; }
+      .panel-left { fill: #2d2d30; }
+      .panel-right { fill: #0d3b20; }
+      .header-left { fill: #cd3131; }
+      .header-right { fill: #16825d; }
+      .label { fill: white; font-size: 16px; font-weight: bold; }
+      .subtle { fill: #888; font-size: 12px; }
+      .code { fill: #d4d4d4; font-size: 11px; }
+      .keyword { fill: #569cd6; font-size: 11px; }
+      .string { fill: #ce9178; font-size: 11px; }
+      .func { fill: #dcdcaa; font-size: 11px; }
+      .cmd { fill: #4ec9b0; font-size: 22px; font-weight: bold; }
+      .big { fill: white; font-size: 52px; font-weight: bold; }
+      .stat { fill: #f0f0f0; font-size: 16px; }
+      .stat-bad { fill: #f48771; font-size: 16px; font-weight: bold; }
+      .stat-good { fill: #6fd69c; font-size: 16px; font-weight: bold; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="1200" height="700"/>
+
+  <!-- Title -->
+  <text x="600" y="40" class="label" text-anchor="middle" font-size="22">Binding 4 Open3D geometry classes</text>
+
+  <!-- LEFT PANEL: pybind11 -->
+  <rect class="header-left" x="30" y="70" width="560" height="38"/>
+  <text x="50" y="95" class="label">pybind11 (what Open3D uses today)</text>
+  <rect class="panel-left" x="30" y="108" width="560" height="500"/>
+
+  <!-- Code snippet -->
+  <text x="50" y="135" class="keyword">void <tspan class="func">pybind_pointcloud_definitions</tspan>(py::module &amp;m) {</text>
+  <text x="60" y="155" class="code">    auto pointcloud =</text>
+  <text x="60" y="170" class="code">        static_cast&lt;py::class_&lt;PointCloud, ...&gt;&gt;(</text>
+  <text x="60" y="185" class="code">            m.attr(<tspan class="string">"PointCloud"</tspan>));</text>
+  <text x="60" y="200" class="code">    py::detail::bind_default_constructor&lt;PointCloud&gt;(...);</text>
+  <text x="60" y="215" class="code">    pointcloud</text>
+  <text x="60" y="230" class="code">        .def(py::init&lt;const std::vector&lt;Eigen::Vector3d&gt;&amp;&gt;(),</text>
+  <text x="60" y="245" class="code">             <tspan class="string">"Create a PointCloud from points"</tspan>, <tspan class="string">"points"</tspan>_a)</text>
+  <text x="60" y="260" class="code">        .def(<tspan class="string">"has_points"</tspan>, &amp;PointCloud::HasPoints, ...)</text>
+  <text x="60" y="275" class="code">        .def(<tspan class="string">"has_normals"</tspan>, &amp;PointCloud::HasNormals, ...)</text>
+  <text x="60" y="290" class="code">        .def(<tspan class="string">"has_colors"</tspan>, &amp;PointCloud::HasColors, ...)</text>
+  <text x="60" y="305" class="code">        .def(<tspan class="string">"paint_uniform_color"</tspan>,</text>
+  <text x="60" y="320" class="code">             &amp;PointCloud::PaintUniformColor, <tspan class="string">"color"</tspan>_a)</text>
+  <text x="60" y="335" class="code">        .def(<tspan class="string">"voxel_down_sample"</tspan>,</text>
+  <text x="60" y="350" class="code">             &amp;PointCloud::VoxelDownSample, <tspan class="string">"voxel_size"</tspan>_a)</text>
+  <text x="60" y="365" class="code">        .def(<tspan class="string">"select_by_index"</tspan>, ...)</text>
+  <text x="60" y="380" class="code">        .def(<tspan class="string">"translate"</tspan>, ...)</text>
+  <text x="60" y="395" class="code">        .def(<tspan class="string">"scale"</tspan>, ...)</text>
+  <text x="60" y="410" class="code">        .def(<tspan class="string">"rotate"</tspan>, ...)</text>
+  <text x="60" y="425" class="code">        .def(<tspan class="string">"get_center"</tspan>, ...)</text>
+  <text x="60" y="440" class="code">        .def(<tspan class="string">"get_min_bound"</tspan>, ...)</text>
+  <text x="60" y="455" class="subtle">        ... 400 more lines ...</text>
+  <text x="60" y="475" class="code">}</text>
+
+  <!-- Stats left -->
+  <text x="50" y="525" class="stat-bad">1,578 lines of hand-written binding code</text>
+  <text x="50" y="555" class="stat">across 4 files</text>
+  <text x="50" y="585" class="stat">updated by hand every API change</text>
+
+  <!-- RIGHT PANEL: mirror_bridge -->
+  <rect class="header-right" x="610" y="70" width="560" height="38"/>
+  <text x="630" y="95" class="label">mirror_bridge (one command)</text>
+  <rect class="panel-right" x="610" y="108" width="560" height="500"/>
+
+  <!-- Command -->
+  <text x="640" y="275" class="cmd" font-size="16">$</text>
+  <text x="660" y="275" class="cmd" font-size="17">mirror_bridge generate src/ \</text>
+  <text x="660" y="305" class="cmd" font-size="17">  --module open3d_geometry \</text>
+  <text x="660" y="335" class="cmd" font-size="17">  --lang python</text>
+
+  <!-- Stats right -->
+  <text x="630" y="505" class="stat-good">0 lines of binding code</text>
+  <text x="630" y="535" class="stat">auto-discovers all classes</text>
+  <text x="630" y="565" class="stat">auto-detects Eigen, adds converters</text>
+  <text x="630" y="590" class="stat">updates automatically on recompile</text>
+
+  <!-- Arrow -->
+  <text x="600" y="370" font-size="36" fill="#6fd69c" text-anchor="middle">→</text>
+
+  <!-- Bottom bar -->
+  <rect x="30" y="630" width="1140" height="50" fill="#0d1b2a"/>
+  <text x="600" y="662" class="label" text-anchor="middle" font-size="18">Same classes · Same API · Same C++ compiler · 1,578 lines → 0 lines</text>
+</svg>

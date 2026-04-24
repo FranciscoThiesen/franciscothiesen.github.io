@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .bg { fill: #0f1115; }
+      .title { fill: #ffffff; font-size: 32px; font-weight: 800; }
+      .subtitle { fill: #9ca3af; font-size: 16px; }
+      .col-header { fill: #d1d5db; font-size: 16px; font-weight: 600; }
+      .row-label { fill: #e5e7eb; font-size: 17px; }
+      .row-sub { fill: #9ca3af; font-size: 13px; }
+      .pybind-cell { fill: #ef4444; font-size: 22px; font-weight: 700; font-family: 'SF Mono', Monaco, monospace; }
+      .mb-cell { fill: #22c55e; font-size: 22px; font-weight: 700; font-family: 'SF Mono', monospace; }
+      .row-bg { fill: #1a1d24; }
+      .row-bg-alt { fill: #14171c; }
+      .divider { stroke: #374151; stroke-width: 1; }
+      .total-label { fill: #ffffff; font-size: 19px; font-weight: 700; }
+      .total-pybind { fill: #fca5a5; font-size: 28px; font-weight: 800; font-family: 'SF Mono', monospace; }
+      .total-mb { fill: #86efac; font-size: 28px; font-weight: 800; font-family: 'SF Mono', monospace; }
+      .mono { font-family: 'SF Mono', Monaco, monospace; }
+      .github { fill: #6b7280; font-size: 13px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="675"/>
+
+  <!-- Title -->
+  <text x="600" y="60" class="title" text-anchor="middle">Open3D port: pybind11 vs mirror_bridge</text>
+  <text x="600" y="90" class="subtitle" text-anchor="middle">4 geometry classes (PointCloud, LineSet, AxisAlignedBoundingBox, TriangleMesh)</text>
+
+  <!-- Column headers -->
+  <text x="40" y="150" class="col-header">Metric</text>
+  <text x="700" y="150" class="col-header" text-anchor="middle">pybind11</text>
+  <text x="1000" y="150" class="col-header" text-anchor="middle">mirror_bridge</text>
+  <line x1="40" y1="165" x2="1160" y2="165" class="divider"/>
+
+  <!-- Row 1: binding lines -->
+  <rect x="30" y="180" width="1140" height="55" class="row-bg"/>
+  <text x="50" y="210" class="row-label">Lines of binding code</text>
+  <text x="50" y="228" class="row-sub">(the 4 classes)</text>
+  <text x="700" y="218" class="pybind-cell" text-anchor="middle">1,578</text>
+  <text x="1000" y="218" class="mb-cell" text-anchor="middle">0</text>
+
+  <!-- Row 2: files -->
+  <rect x="30" y="235" width="1140" height="55" class="row-bg-alt"/>
+  <text x="50" y="265" class="row-label">Files to maintain</text>
+  <text x="50" y="283" class="row-sub">for these classes</text>
+  <text x="700" y="273" class="pybind-cell" text-anchor="middle">4</text>
+  <text x="1000" y="273" class="mb-cell" text-anchor="middle">0</text>
+
+  <!-- Row 3: user commands -->
+  <rect x="30" y="290" width="1140" height="55" class="row-bg"/>
+  <text x="50" y="320" class="row-label">Steps to build</text>
+  <text x="50" y="338" class="row-sub">from C++ source to .so</text>
+  <text x="700" y="328" class="pybind-cell" text-anchor="middle">manual build</text>
+  <text x="1000" y="328" class="mb-cell" text-anchor="middle">1 command</text>
+
+  <!-- Row 4: binary size -->
+  <rect x="30" y="345" width="1140" height="55" class="row-bg-alt"/>
+  <text x="50" y="375" class="row-label">Binary size (.so)</text>
+  <text x="50" y="393" class="row-sub">clang-p2996, -O3 -DNDEBUG</text>
+  <text x="700" y="383" class="pybind-cell" text-anchor="middle">452 KB</text>
+  <text x="1000" y="383" class="mb-cell" text-anchor="middle">176 KB</text>
+
+  <!-- Row 5: runtime -->
+  <rect x="30" y="400" width="1140" height="55" class="row-bg"/>
+  <text x="50" y="430" class="row-label">Runtime (attribute set)</text>
+  <text x="50" y="448" class="row-sub">bbox.min_bound = [x,y,z]</text>
+  <text x="700" y="438" class="pybind-cell" text-anchor="middle">598 ns</text>
+  <text x="1000" y="438" class="mb-cell" text-anchor="middle">51 ns</text>
+
+  <!-- Row 6: bulk -->
+  <rect x="30" y="455" width="1140" height="55" class="row-bg-alt"/>
+  <text x="50" y="485" class="row-label">Runtime (bulk assign)</text>
+  <text x="50" y="503" class="row-sub">points = [1000 × Vector3d]</text>
+  <text x="700" y="493" class="pybind-cell" text-anchor="middle">499 µs</text>
+  <text x="1000" y="493" class="mb-cell" text-anchor="middle">43 µs</text>
+
+  <!-- Bottom summary bar -->
+  <rect x="30" y="535" width="1140" height="80" fill="#0a2818" stroke="#16825d" stroke-width="1" rx="4"/>
+  <text x="600" y="572" class="total-label" text-anchor="middle">Same classes. Same compiler. Same -O3.</text>
+  <text x="600" y="600" text-anchor="middle" fill="#86efac" font-size="18" font-weight="700">mirror_bridge: 2.6× – 11.7× faster runtime, 2.6× smaller binary, zero binding code.</text>
+
+  <!-- Footer -->
+  <text x="600" y="650" class="github" text-anchor="middle">github.com/FranciscoThiesen/mirror_bridge · chico.dev</text>
+</svg>

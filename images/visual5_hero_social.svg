@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f1115"/>
+      <stop offset="100%" stop-color="#1a1d24"/>
+    </linearGradient>
+    <style>
+      .eyebrow { fill: #9ca3af; font-size: 20px; letter-spacing: 2px; text-transform: uppercase; }
+      .headline { fill: #ffffff; font-size: 54px; font-weight: 800; line-height: 1.1; }
+      .sub { fill: #d1d5db; font-size: 22px; font-weight: 400; }
+      .stat-big { fill: #22c55e; font-size: 180px; font-weight: 900; font-family: 'SF Mono', Monaco, monospace; }
+      .stat-crossed { fill: #6b7280; font-size: 180px; font-weight: 900; font-family: 'SF Mono', Monaco, monospace; text-decoration: line-through; }
+      .arrow { fill: #facc15; font-size: 100px; font-weight: 700; }
+      .footer { fill: #9ca3af; font-size: 16px; }
+      .url { fill: #22c55e; font-size: 16px; font-family: 'SF Mono', monospace; }
+      .code { fill: #86efac; font-size: 28px; font-family: 'SF Mono', Monaco, monospace; font-weight: 600; }
+    </style>
+  </defs>
+
+  <rect fill="url(#bgGrad)" width="1200" height="630"/>
+
+  <!-- Eyebrow -->
+  <text x="600" y="80" class="eyebrow" text-anchor="middle">Open3D port · C++26 reflection</text>
+
+  <!-- Big headline -->
+  <text x="600" y="160" class="headline" text-anchor="middle">1,578 lines of pybind11</text>
+  <text x="600" y="220" class="headline" text-anchor="middle">replaced by one command</text>
+
+  <!-- Visual: lines crossed out, 1 command shown -->
+  <line x1="280" y1="155" x2="920" y2="155" stroke="#ef4444" stroke-width="4" opacity="0.6"/>
+
+  <!-- The command -->
+  <rect x="200" y="270" width="800" height="70" rx="8" fill="#0a2818" stroke="#16825d" stroke-width="2"/>
+  <text x="240" y="316" class="code">$ mirror_bridge generate src/ --lang python</text>
+
+  <!-- Three stats -->
+  <g transform="translate(150,400)">
+    <text x="0" y="0" fill="#6fd69c" font-size="52" font-weight="800" font-family="'SF Mono', monospace">0</text>
+    <text x="0" y="30" fill="#9ca3af" font-size="14" text-transform="uppercase" letter-spacing="1px">lines of binding code</text>
+  </g>
+
+  <g transform="translate(500,400)">
+    <text x="0" y="0" fill="#6fd69c" font-size="52" font-weight="800" font-family="'SF Mono', monospace">2.6–11.7×</text>
+    <text x="0" y="30" fill="#9ca3af" font-size="14" text-transform="uppercase" letter-spacing="1px">faster than pybind11</text>
+  </g>
+
+  <g transform="translate(900,400)">
+    <text x="0" y="0" fill="#6fd69c" font-size="52" font-weight="800" font-family="'SF Mono', monospace">2.6×</text>
+    <text x="0" y="30" fill="#9ca3af" font-size="14" text-transform="uppercase" letter-spacing="1px">smaller binary</text>
+  </g>
+
+  <!-- Footer -->
+  <line x1="300" y1="540" x2="900" y2="540" stroke="#374151" stroke-width="1"/>
+  <text x="600" y="580" class="footer" text-anchor="middle">chico.dev/Open3D-Port</text>
+  <text x="600" y="605" class="url" text-anchor="middle">github.com/FranciscoThiesen/mirror_bridge</text>
+</svg>

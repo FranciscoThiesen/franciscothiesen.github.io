@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="'SF Mono', Monaco, Consolas, monospace">
+  <defs>
+    <style>
+      .window { fill: #1e1e1e; }
+      .titlebar { fill: #2d2d30; }
+      .prompt { fill: #86efac; font-size: 16px; }
+      .cmd { fill: #ffffff; font-size: 16px; }
+      .out { fill: #d4d4d4; font-size: 14px; }
+      .label { fill: #569cd6; font-size: 14px; }
+      .hl { fill: #ce9178; font-size: 14px; }
+      .ok { fill: #22c55e; font-size: 14px; }
+      .bold { fill: #facc15; font-size: 14px; font-weight: bold; }
+      .sep { fill: #22c55e; font-size: 14px; }
+      .comment { fill: #6a9955; font-size: 14px; font-style: italic; }
+      .dot-r { fill: #ff5f56; }
+      .dot-y { fill: #ffbd2e; }
+      .dot-g { fill: #27c93f; }
+      .window-title { fill: #ccc; font-size: 12px; }
+    </style>
+  </defs>
+
+  <!-- Window -->
+  <rect class="window" x="30" y="30" width="1140" height="640" rx="8"/>
+  <rect class="titlebar" x="30" y="30" width="1140" height="28" rx="8"/>
+  <rect class="titlebar" x="30" y="44" width="1140" height="14"/>
+  <circle class="dot-r" cx="54" cy="44" r="6"/>
+  <circle class="dot-y" cx="74" cy="44" r="6"/>
+  <circle class="dot-g" cx="94" cy="44" r="6"/>
+  <text x="600" y="48" class="window-title" text-anchor="middle">~/mirror_bridge/examples/open3d-port — zsh</text>
+
+  <!-- Content -->
+  <text x="50" y="90" class="comment"># Step 1: Generate bindings with one command</text>
+
+  <text x="50" y="120" class="prompt">$</text>
+  <text x="70" y="120" class="cmd">mirror_bridge generate src/ --module open3d_geometry --lang python</text>
+
+  <text x="50" y="155" class="label">Mirror Bridge - Generate Bindings</text>
+  <text x="50" y="172" class="label">==================================</text>
+
+  <text x="50" y="200" class="bold">Scanning for classes...</text>
+  <text x="50" y="220" class="ok">  ✓ Found: AxisAlignedBoundingBox in geometry.hpp</text>
+  <text x="50" y="237" class="ok">  ✓ Found: PointCloud in geometry.hpp</text>
+  <text x="50" y="254" class="ok">  ✓ Found: LineSet in geometry.hpp</text>
+  <text x="50" y="271" class="ok">  ✓ Found: TriangleMesh in geometry.hpp</text>
+
+  <text x="50" y="298" class="sep">Discovered 4 classes</text>
+
+  <text x="50" y="325" class="bold">Generating python bindings...</text>
+  <text x="50" y="342" class="bold">Compiling python module...</text>
+  <text x="50" y="365" class="sep">✓ Built: build/open3d_geometry.so</text>
+  <text x="50" y="388" class="sep">✓ Successfully built bindings for: python</text>
+
+  <text x="50" y="430" class="comment"># Step 2: Use it from Python — no setup, no imports beyond the module</text>
+
+  <text x="50" y="460" class="prompt">$</text>
+  <text x="70" y="460" class="cmd">python3</text>
+
+  <text x="50" y="485" class="out">&gt;&gt;&gt; <tspan fill="#569cd6">import</tspan> open3d_geometry <tspan fill="#569cd6">as</tspan> o3d</text>
+  <text x="50" y="505" class="out">&gt;&gt;&gt; pc = o3d.PointCloud()</text>
+  <text x="50" y="525" class="out">&gt;&gt;&gt; pc.points = [[0,0,0], [1,0,0], [0,1,0], [0,0,1]]</text>
+  <text x="50" y="545" class="out">&gt;&gt;&gt; pc.get_center()</text>
+  <text x="50" y="565" class="hl">[0.25, 0.25, 0.25]</text>
+  <text x="50" y="585" class="out">&gt;&gt;&gt; pc.get_axis_aligned_bounding_box().volume()</text>
+  <text x="50" y="605" class="hl">1.0</text>
+  <text x="50" y="625" class="out">&gt;&gt;&gt; mesh = o3d.TriangleMesh()</text>
+  <text x="50" y="645" class="out">&gt;&gt;&gt; mesh.get_surface_area()</text>
+</svg>

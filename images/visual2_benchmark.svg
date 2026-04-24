@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" font-family="'SF Mono', Monaco, Consolas, monospace">
+  <defs>
+    <style>
+      .bg { fill: #1e1e1e; }
+      .title { fill: white; font-size: 24px; font-weight: bold; }
+      .subtitle { fill: #888; font-size: 14px; }
+      .label { fill: #d4d4d4; font-size: 14px; font-family: 'SF Mono', monospace; }
+      .number { fill: #f0f0f0; font-size: 14px; font-family: 'SF Mono', monospace; font-weight: bold; }
+      .speedup { fill: #6fd69c; font-size: 14px; font-weight: bold; }
+      .bar-pybind { fill: #cd3131; }
+      .bar-mb { fill: #16825d; }
+      .axis { stroke: #555; stroke-width: 1; }
+      .legend-label { fill: #ccc; font-size: 13px; }
+      .note { fill: #999; font-size: 11px; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1200" height="700"/>
+
+  <!-- Title -->
+  <text x="600" y="35" class="title" text-anchor="middle">Binding overhead: mirror_bridge vs pybind11</text>
+  <text x="600" y="58" class="subtitle" text-anchor="middle">Same C++ classes · Same compiler (clang-p2996) · Same -O3</text>
+
+  <!-- Legend -->
+  <rect x="820" y="80" width="16" height="16" class="bar-pybind"/>
+  <text x="842" y="94" class="legend-label">pybind11</text>
+  <rect x="920" y="80" width="16" height="16" class="bar-mb"/>
+  <text x="942" y="94" class="legend-label">mirror_bridge</text>
+
+  <!-- Bars: each row is 50px tall, bars are drawn as log-scale-ish for readability -->
+
+  <!-- Row 1: construct -->
+  <text x="40" y="135" class="label">PointCloud()</text>
+  <text x="180" y="135" class="note">empty construction</text>
+  <rect x="330" y="120" width="238" height="14" class="bar-pybind"/>
+  <text x="575" y="131" class="number">238 ns</text>
+  <rect x="330" y="138" width="68" height="14" class="bar-mb"/>
+  <text x="405" y="149" class="number">68 ns</text>
+  <text x="1090" y="140" class="speedup" text-anchor="end">3.5× faster</text>
+
+  <!-- Row 2: has_points -->
+  <text x="40" y="185" class="label">.has_points()</text>
+  <text x="180" y="185" class="note">bool method</text>
+  <rect x="330" y="170" width="109" height="14" class="bar-pybind"/>
+  <text x="446" y="181" class="number">109 ns</text>
+  <rect x="330" y="188" width="42" height="14" class="bar-mb"/>
+  <text x="379" y="199" class="number">42 ns</text>
+  <text x="1090" y="190" class="speedup" text-anchor="end">2.6× faster</text>
+
+  <!-- Row 3: get_center -->
+  <text x="40" y="235" class="label">.get_center()</text>
+  <text x="180" y="235" class="note">100 pts, Vector3d</text>
+  <rect x="330" y="220" width="424" height="14" class="bar-pybind"/>
+  <text x="761" y="231" class="number">424 ns</text>
+  <rect x="330" y="238" width="152" height="14" class="bar-mb"/>
+  <text x="489" y="249" class="number">152 ns</text>
+  <text x="1090" y="240" class="speedup" text-anchor="end">2.8× faster</text>
+
+  <!-- Row 4: attribute get -->
+  <text x="40" y="285" class="label">.min_bound</text>
+  <text x="180" y="285" class="note">get Vector3d</text>
+  <rect x="330" y="270" width="301" height="14" class="bar-pybind"/>
+  <text x="638" y="281" class="number">301 ns</text>
+  <rect x="330" y="288" width="56" height="14" class="bar-mb"/>
+  <text x="393" y="299" class="number">56 ns</text>
+  <text x="1090" y="290" class="speedup" text-anchor="end">5.4× faster</text>
+
+  <!-- Row 5: attribute set -->
+  <text x="40" y="335" class="label">.min_bound =</text>
+  <text x="180" y="335" class="note">set Vector3d</text>
+  <rect x="330" y="320" width="598" height="14" class="bar-pybind"/>
+  <text x="935" y="331" class="number">598 ns</text>
+  <rect x="330" y="338" width="51" height="14" class="bar-mb"/>
+  <text x="388" y="349" class="number">51 ns</text>
+  <text x="1090" y="340" class="speedup" text-anchor="end">11.7× faster</text>
+
+  <!-- Row 6: translate -->
+  <text x="40" y="385" class="label">.translate(v)</text>
+  <text x="180" y="385" class="note">Vector3d arg, mutate</text>
+  <rect x="330" y="370" width="613" height="14" class="bar-pybind"/>
+  <text x="950" y="381" class="number">613 ns</text>
+  <rect x="330" y="388" width="88" height="14" class="bar-mb"/>
+  <text x="425" y="399" class="number">88 ns</text>
+  <text x="1090" y="390" class="speedup" text-anchor="end">7.0× faster</text>
+
+  <!-- Row 7: scale -->
+  <text x="40" y="435" class="label">.scale(s, c)</text>
+  <text x="180" y="435" class="note">double + Vector3d</text>
+  <rect x="330" y="420" width="663" height="14" class="bar-pybind"/>
+  <text x="1000" y="431" class="number">663 ns</text>
+  <rect x="330" y="438" width="138" height="14" class="bar-mb"/>
+  <text x="475" y="449" class="number">138 ns</text>
+  <text x="1090" y="440" class="speedup" text-anchor="end">4.8× faster</text>
+
+  <!-- Row 8: bulk assign (log scale indicator) -->
+  <text x="40" y="495" class="label">.points = [1000]</text>
+  <text x="180" y="495" class="note">bulk vec&lt;Vector3d&gt;</text>
+  <rect x="330" y="480" width="620" height="14" class="bar-pybind"/>
+  <text x="957" y="491" class="number">499,137 ns</text>
+  <rect x="330" y="498" width="54" height="14" class="bar-mb"/>
+  <text x="391" y="509" class="number">43,321 ns</text>
+  <text x="1090" y="500" class="speedup" text-anchor="end">11.5× faster</text>
+
+  <!-- Note about bulk bar scale -->
+  <text x="40" y="525" class="note">(bulk row shown at different scale — 499µs vs 43µs)</text>
+
+  <!-- Footer -->
+  <line x1="40" y1="570" x2="1160" y2="570" class="axis"/>
+  <text x="40" y="600" class="label" font-size="16">mirror_bridge overall: 2.6× – 11.7× faster on every operation</text>
+  <text x="40" y="625" class="subtitle">Binary size: 176 KB (mirror_bridge) vs 452 KB (pybind11)  —  2.6× smaller</text>
+  <text x="40" y="650" class="note">Median of 5 runs × 100,000 iterations each · Ubuntu 22.04 · ARM64</text>
+</svg>
