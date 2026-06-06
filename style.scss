@@ -489,15 +489,16 @@ tr:nth-child(2n) td { background: var(--surface); }
 
 .project {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   align-items: flex-start;
-  padding: 22px 0;
+  padding: 14px 0;
   border-bottom: 1px dashed var(--border);
 
   &:last-of-type { border-bottom: 0; }
 
+  // Small thume-style thumbnail; the text never stacks below it.
   .thumb {
-    flex: 0 0 180px;
+    flex: 0 0 116px;
     border: 0;
 
     img {
@@ -511,56 +512,39 @@ tr:nth-child(2n) td { background: var(--surface); }
     &:hover img { border-color: var(--accent); }
   }
 
-  .info {
+  .desc {
     flex: 1 1 auto;
     min-width: 0;
-  }
-
-  h3 {
-    margin: 0 0 0.35em;
-    font-size: 16px;
-
-    a { color: var(--text); border: 0; }
-    a:hover { color: var(--accent); }
-
-    &::before {
-      content: "› ";
-      color: var(--accent);
-      font-weight: 700;
-    }
-  }
-
-  .project-meta {
-    margin: 0 0 0.6em;
-    font-size: 12px;
-    color: var(--dim);
-
-    a {
-      border: 0;
-      margin-left: 0.15em;
-      color: var(--accent);
-
-      &::before { content: "["; color: var(--dim); }
-      &::after  { content: "]"; color: var(--dim); }
-      &:hover   { color: var(--accent-hi); }
-    }
-  }
-
-  .desc {
     margin: 0;
     font-size: 13.5px;
     color: var(--text-2);
   }
 
+  .pname {
+    font-weight: 700;
+    color: var(--text);
+    border: 0;
+
+    &::before { content: "› "; color: var(--accent); }
+    &:hover   { color: var(--accent); }
+  }
+
+  .plink {
+    border: 0;
+    margin-left: 0.15em;
+    font-size: 12px;
+    color: var(--accent);
+    white-space: nowrap;
+
+    &::before { content: "["; color: var(--dim); }
+    &::after  { content: "]"; color: var(--dim); }
+    &:hover   { color: var(--accent-hi); }
+  }
+
   @include mobile {
-    flex-direction: column;
     gap: 12px;
 
-    .thumb {
-      flex-basis: auto;
-      width: 100%;
-      max-width: 340px;
-    }
+    .thumb { flex-basis: 92px; }
   }
 }
 
