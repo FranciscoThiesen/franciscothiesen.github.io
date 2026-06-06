@@ -51,7 +51,7 @@ permalink: /projects/
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/VolumeRendering" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/volume_rendering.svg" alt="VolumeRendering — CT head profile in a medical scan viewer" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/VolumeRendering" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/volume_rendering.svg" alt="VolumeRendering — real skull render produced by the project from CT data" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/VolumeRendering">VolumeRendering</a>: Volume renderer for 256³ CT scans — adaptive Simpson integration along each viewing ray, with transfer functions mapping density to color and opacity.</p>
 </div>
 
