@@ -1,51 +1,73 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360">
   <defs>
-    <radialGradient id="gMirror" cx="0.35" cy="0.3">
-      <stop offset="0%" stop-color="#ececec"/>
-      <stop offset="45%" stop-color="#9a9a9a"/>
+    <linearGradient id="backW" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f3efe2"/>
+      <stop offset="100%" stop-color="#cfc8b4"/>
+    </linearGradient>
+    <linearGradient id="leftW" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8e2415"/>
+      <stop offset="100%" stop-color="#d8442e"/>
+    </linearGradient>
+    <linearGradient id="rightW" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2fae5d"/>
+      <stop offset="100%" stop-color="#15703a"/>
+    </linearGradient>
+    <linearGradient id="ceilW" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d6cfba"/>
+      <stop offset="100%" stop-color="#efe9da"/>
+    </linearGradient>
+    <linearGradient id="floorW" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ded6c2"/>
+      <stop offset="100%" stop-color="#9a9078"/>
+    </linearGradient>
+    <radialGradient id="mirr" cx="0.35" cy="0.32">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="35%" stop-color="#cfcfcf"/>
+      <stop offset="70%" stop-color="#6e6e6e"/>
       <stop offset="100%" stop-color="#2e2e2e"/>
     </radialGradient>
-    <radialGradient id="gOrange" cx="0.35" cy="0.3">
-      <stop offset="0%" stop-color="#fdba74"/>
-      <stop offset="55%" stop-color="#ea580c"/>
-      <stop offset="100%" stop-color="#7c2d12"/>
+    <radialGradient id="wsph" cx="0.38" cy="0.3">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="45%" stop-color="#efe9d8"/>
+      <stop offset="100%" stop-color="#b3a98e"/>
     </radialGradient>
-    <radialGradient id="gGlow">
-      <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.5"/>
-      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    <radialGradient id="lglow">
+      <stop offset="0%" stop-color="#fffbe6" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#fffbe6" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="480" height="360" rx="10" fill="#0d0d0d"/>
-  <path d="M10 0.5 h460 a9.5 9.5 0 0 1 9.5 9.5 v26 h-479 v-26 a9.5 9.5 0 0 1 9.5 -9.5 z" fill="#141414"/>
-  <line x1="0" y1="36" x2="480" y2="36" stroke="#1f1f1f"/>
-  <circle cx="22" cy="18" r="5" fill="#f87171"/>
-  <circle cx="42" cy="18" r="5" fill="#fbbf24"/>
-  <circle cx="62" cy="18" r="5" fill="#4ade80"/>
-  <text x="82" y="22.5" font-size="12.5" fill="#6b6b6b">$ pathtracer cornell.scn</text>
 
-  <!-- cornell box -->
-  <rect x="180" y="120" width="120" height="130" fill="#191919"/>
-  <polygon points="110,70 370,70 300,120 180,120" fill="#1d1d1d"/>
-  <polygon points="110,300 370,300 300,250 180,250" fill="#202020"/>
-  <polygon points="110,70 180,120 180,250 110,300" fill="#f87171" opacity="0.3"/>
-  <polygon points="370,70 300,120 300,250 370,300" fill="#4ade80" opacity="0.28"/>
+  <!-- the box -->
+  <rect x="150" y="110" width="180" height="140" fill="url(#backW)"/>
+  <polygon points="0,0 480,0 330,110 150,110" fill="url(#ceilW)"/>
+  <polygon points="0,360 480,360 330,250 150,250" fill="url(#floorW)"/>
+  <polygon points="0,0 150,110 150,250 0,360" fill="url(#leftW)"/>
+  <polygon points="480,0 330,110 330,250 480,360" fill="url(#rightW)"/>
 
-  <!-- area light + glow -->
-  <ellipse cx="240" cy="116" rx="62" ry="28" fill="url(#gGlow)" opacity="0.4"/>
-  <polygon points="222,103 258,103 248,88 232,88" fill="#fde68a"/>
-  <ellipse cx="240" cy="278" rx="66" ry="12" fill="#fbbf24" opacity="0.07"/>
+  <!-- area light + bloom -->
+  <ellipse cx="240" cy="90" rx="100" ry="46" fill="url(#lglow)"/>
+  <polygon points="198,46 282,46 270,72 210,72" fill="#fffdf2"/>
+  <ellipse cx="240" cy="296" rx="120" ry="28" fill="#fffbe6" opacity="0.14"/>
 
-  <!-- spheres + soft shadows -->
-  <ellipse cx="193" cy="291" rx="34" ry="7" fill="#000000" opacity="0.55"/>
-  <ellipse cx="305" cy="277" rx="28" ry="6" fill="#000000" opacity="0.5"/>
-  <circle cx="193" cy="254" r="33" fill="url(#gMirror)"/>
-  <circle cx="305" cy="246" r="27" fill="url(#gOrange)"/>
+  <!-- color bleed on near walls -->
+  <polygon points="150,110 330,110 330,250 150,250" fill="#d8442e" opacity="0.05"/>
 
-  <!-- bounced light paths -->
-  <polyline points="240,100 207,225 300,168" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.75"/>
-  <polyline points="246,100 303,222 368,262" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5"/>
+  <!-- soft shadows -->
+  <ellipse cx="198" cy="301" rx="52" ry="11" fill="#241d12" opacity="0.32"/>
+  <ellipse cx="196" cy="300" rx="34" ry="8"  fill="#241d12" opacity="0.38"/>
+  <ellipse cx="306" cy="279" rx="42" ry="9"  fill="#241d12" opacity="0.3"/>
+  <ellipse cx="304" cy="278" rx="27" ry="6.5" fill="#241d12" opacity="0.35"/>
 
-  <text x="240" y="330" font-size="12.5" fill="#737373" text-anchor="middle">explicit light sampling · 8 → 25,000 spp</text>
+  <!-- mirror sphere (reflecting the red and green walls) -->
+  <circle cx="192" cy="252" r="44" fill="url(#mirr)"/>
+  <ellipse cx="158" cy="254" rx="10" ry="28" fill="#d8442e" opacity="0.45"/>
+  <ellipse cx="226" cy="254" rx="9" ry="26" fill="#2fae5d" opacity="0.4"/>
+  <ellipse cx="192" cy="289" rx="24" ry="6" fill="#6b6250" opacity="0.5"/>
+  <circle cx="181" cy="234" r="6" fill="#ffffff" opacity="0.95"/>
 
-  <rect x="0.5" y="0.5" width="479" height="359" rx="9.5" fill="none" stroke="#262626"/>
+  <!-- diffuse sphere with subtle bleed -->
+  <circle cx="300" cy="240" r="34" fill="url(#wsph)"/>
+  <ellipse cx="283" cy="242" rx="10" ry="24" fill="#d8442e" opacity="0.2"/>
+  <ellipse cx="317" cy="242" rx="10" ry="24" fill="#2fae5d" opacity="0.22"/>
+  <ellipse cx="295" cy="222" rx="12" ry="6" fill="#ffffff" opacity="0.7"/>
 </svg>

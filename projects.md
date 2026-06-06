@@ -12,17 +12,17 @@ permalink: /projects/
 <p class="section-lede">Making compile-time reflection do real work — bindings, serialization, hashing — before it ships in a standard compiler.</p>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_bridge" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_bridge.svg" alt="mirror_bridge — one C++ struct bridged to Python, Lua and JavaScript" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_bridge" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_bridge.svg" alt="mirror_bridge — a suspension bridge carrying C++ across to Python, Lua and JavaScript" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/mirror_bridge">mirror_bridge</a>: One <code>bind_class&lt;T&gt;()</code> call and C++26 reflection generates the entire Python, Lua, and JavaScript binding — no boilerplate, 3–5× faster dispatch than pybind11. Porting Open3D's point-cloud pipeline replaced 25,262 hand-written binding lines with 71. <a class="plink" href="{{ site.baseurl }}/Mirror-Bridge/">writeup</a> <a class="plink" href="{{ site.baseurl }}/Mirror-Bridge-Open3D-71-Lines/">open3d port</a> <a class="plink" href="{{ site.baseurl }}/Mirror-Bridge-Multi-Language/">benchmarks</a></p>
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/simdjson_reflection_paper" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/simdjson_reflection.svg" alt="Reflection-based JSON for simdjson at 7.8 GB/s" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/simdjson_reflection_paper" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/simdjson_reflection.svg" alt="simdjson reflection — JSON braces split by a lightning bolt" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/simdjson_reflection_paper">simdjson × reflection</a>: Compile-time reflection meets simdjson: JSON ⇄ native C++ structs at 3.5–7.8 GB/s with zero per-type code, 2–3× faster than yyjson and Rust's serde. Paper co-authored with Daniel Lemire. <a class="plink" href="{{ site.baseurl }}/Reflection-Based-Serialization/">writeup</a></p>
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_hash" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_hash.svg" alt="mirror_hash — a struct hashed into an avalanche of bits" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_hash" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_hash.svg" alt="mirror_hash — a fingerprint dissolving into hash bits" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/mirror_hash">mirror_hash</a>: <code>std::hash</code> specializations generated from reflection instead of written by hand — a trivially-copyable struct hashes in under 2 ns, and the whole thing passes SMHasher. The byte-hashing core uses ARM64 AES instructions to beat rapidhash by up to 147% on 64 B–8 KB keys. <a class="plink" href="{{ site.baseurl }}/Mirror-Hash/">writeup</a></p>
 </div>
 
@@ -34,12 +34,12 @@ permalink: /projects/
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/dimacs_2026" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/dimacs_maxflow.svg" alt="dimacs_2026 — flow network with the saturated min-cut edges highlighted" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/dimacs_2026" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/dimacs_maxflow.svg" alt="dimacs_2026 — flow network as water pipes, saturated pipes running full" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/dimacs_2026">dimacs_2026 — max-flow</a>: Five complementary max-flow solvers — push-relabel, pseudoflow, EIBFS, and two implicit-grid engines (one new to the literature) — built for the 13th DIMACS Implementation Challenge. 2.1× geometric-mean speedup over the reference solvers across 55 benchmark instances.</p>
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/hotpath" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/hotpath.svg" alt="hotpath — flame graph with the hot frame transpiled to C++" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/hotpath" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/hotpath.svg" alt="hotpath — flame graph with the hottest frame extracted into a C++ block" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/hotpath">hotpath</a>: Profiles your Python, scores each hot function for transpilability, then has an LLM rewrite the winners in C++ — with generated tests on both sides of the boundary to prove the rewrite is faithful.</p>
 </div>
 
@@ -51,7 +51,7 @@ permalink: /projects/
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/VolumeRendering" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/volume_rendering.svg" alt="VolumeRendering — scan rays sampling adaptively through a CT head" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/VolumeRendering" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/volume_rendering.svg" alt="VolumeRendering — CT head profile in a medical scan viewer" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/VolumeRendering">VolumeRendering</a>: Volume renderer for 256³ CT scans — adaptive Simpson integration along each viewing ray, with transfer functions mapping density to color and opacity.</p>
 </div>
 
