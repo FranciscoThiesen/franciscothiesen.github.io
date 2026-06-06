@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#f97316"/>
+    </marker>
+  </defs>
+  <rect width="480" height="360" rx="10" fill="#0d0d0d"/>
+  <path d="M10 0.5 h460 a9.5 9.5 0 0 1 9.5 9.5 v26 h-479 v-26 a9.5 9.5 0 0 1 9.5 -9.5 z" fill="#141414"/>
+  <line x1="0" y1="36" x2="480" y2="36" stroke="#1f1f1f"/>
+  <circle cx="22" cy="18" r="5" fill="#f87171"/>
+  <circle cx="42" cy="18" r="5" fill="#fbbf24"/>
+  <circle cx="62" cy="18" r="5" fill="#4ade80"/>
+  <text x="82" y="22.5" font-size="12.5" fill="#6b6b6b">$ simdjson + p2996 reflection</text>
+
+  <!-- JSON block -->
+  <rect x="32" y="80" width="168" height="124" rx="6" fill="#141414" stroke="#2a2a2a"/>
+  <text x="46" y="108" font-size="14" fill="#d4d4d4">{</text>
+  <text x="46" y="132" font-size="14"><tspan fill="#22d3ee">  "id"</tspan><tspan fill="#a3a3a3">: </tspan><tspan fill="#c084fc">7</tspan><tspan fill="#a3a3a3">,</tspan></text>
+  <text x="46" y="156" font-size="14"><tspan fill="#22d3ee">  "pos"</tspan><tspan fill="#a3a3a3">: [</tspan><tspan fill="#c084fc">0.4</tspan><tspan fill="#a3a3a3">, </tspan><tspan fill="#c084fc">1.7</tspan><tspan fill="#a3a3a3">]</tspan></text>
+  <text x="46" y="180" font-size="14" fill="#d4d4d4">}</text>
+
+  <!-- bidirectional arrows -->
+  <path d="M208 126 H 268" fill="none" stroke="#f97316" stroke-width="2" marker-end="url(#ah)"/>
+  <path d="M272 162 H 212" fill="none" stroke="#f97316" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- struct block -->
+  <rect x="280" y="80" width="168" height="124" rx="6" fill="#141414" stroke="#2a2a2a"/>
+  <text x="294" y="108" font-size="14"><tspan fill="#f97316">struct</tspan><tspan fill="#d4d4d4"> Doc {</tspan></text>
+  <text x="294" y="132" font-size="14"><tspan fill="#f97316">  int</tspan><tspan fill="#a3a3a3"> id;</tspan></text>
+  <text x="294" y="156" font-size="14"><tspan fill="#f97316">  float</tspan><tspan fill="#a3a3a3"> pos[2];</tspan></text>
+  <text x="294" y="180" font-size="14" fill="#d4d4d4">};</text>
+
+  <!-- headline stat -->
+  <text x="240" y="276" font-size="32" font-weight="700" fill="#4ade80" text-anchor="middle">7.8 GB/s</text>
+  <text x="240" y="304" font-size="12.5" fill="#737373" text-anchor="middle">2-3× faster than yyjson &amp; rust serde</text>
+  <text x="240" y="326" font-size="12" fill="#525252" text-anchor="middle">paper with Daniel Lemire · zero boilerplate</text>
+
+  <rect x="0.5" y="0.5" width="479" height="359" rx="9.5" fill="none" stroke="#262626"/>
+</svg>

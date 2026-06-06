@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#f97316"/>
+    </marker>
+  </defs>
+  <rect width="480" height="360" rx="10" fill="#0d0d0d"/>
+  <path d="M10 0.5 h460 a9.5 9.5 0 0 1 9.5 9.5 v26 h-479 v-26 a9.5 9.5 0 0 1 9.5 -9.5 z" fill="#141414"/>
+  <line x1="0" y1="36" x2="480" y2="36" stroke="#1f1f1f"/>
+  <circle cx="22" cy="18" r="5" fill="#f87171"/>
+  <circle cx="42" cy="18" r="5" fill="#fbbf24"/>
+  <circle cx="62" cy="18" r="5" fill="#4ade80"/>
+  <text x="82" y="22.5" font-size="12.5" fill="#6b6b6b">$ mirror_hash</text>
+
+  <!-- struct block -->
+  <rect x="36" y="100" width="152" height="104" rx="6" fill="#141414" stroke="#2a2a2a"/>
+  <text x="50" y="130" font-size="14.5"><tspan fill="#f97316">struct</tspan><tspan fill="#d4d4d4"> Point {</tspan></text>
+  <text x="50" y="155" font-size="14.5"><tspan fill="#f97316">  int</tspan><tspan fill="#a3a3a3"> x, y;</tspan></text>
+  <text x="50" y="180" font-size="14.5" fill="#d4d4d4">};</text>
+
+  <!-- arrow -->
+  <path d="M194 152 H 234" fill="none" stroke="#f97316" stroke-width="2" marker-end="url(#ah)"/>
+
+  <!-- avalanche bit grid: 8 x 4, 18px cells, 6px gap, origin (244,104) -->
+  <g stroke="#2a2a2a" stroke-width="1">
+    <rect x="244" y="104" width="18" height="18" fill="#f97316"/>
+    <rect x="268" y="104" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="292" y="104" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="316" y="104" width="18" height="18" fill="#22d3ee"/>
+    <rect x="340" y="104" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="364" y="104" width="18" height="18" fill="#4ade80"/>
+    <rect x="388" y="104" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="412" y="104" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="244" y="128" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="268" y="128" width="18" height="18" fill="#c084fc"/>
+    <rect x="292" y="128" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="316" y="128" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="340" y="128" width="18" height="18" fill="#f97316"/>
+    <rect x="364" y="128" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="388" y="128" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="412" y="128" width="18" height="18" fill="#22d3ee"/>
+    <rect x="244" y="152" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="268" y="152" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="292" y="152" width="18" height="18" fill="#4ade80"/>
+    <rect x="316" y="152" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="340" y="152" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="364" y="152" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="388" y="152" width="18" height="18" fill="#f97316"/>
+    <rect x="412" y="152" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="244" y="176" width="18" height="18" fill="#22d3ee"/>
+    <rect x="268" y="176" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="292" y="176" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="316" y="176" width="18" height="18" fill="#f97316"/>
+    <rect x="340" y="176" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="364" y="176" width="18" height="18" fill="#c084fc"/>
+    <rect x="388" y="176" width="18" height="18" fill="#1d1d1d"/>
+    <rect x="412" y="176" width="18" height="18" fill="#1d1d1d"/>
+  </g>
+  <text x="337" y="226" font-size="12.5" fill="#c084fc" text-anchor="middle">0x9e3779b97f4a7c15</text>
+
+  <!-- badges + caption -->
+  <text x="130" y="290" font-size="13" fill="#4ade80" text-anchor="middle">[ &lt;2 ns / struct ]</text>
+  <text x="345" y="290" font-size="13" fill="#22d3ee" text-anchor="middle">[ SMHasher: all pass ]</text>
+  <text x="240" y="324" font-size="12" fill="#737373" text-anchor="middle">ARM64 AES path beats rapidhash by up to 147%</text>
+
+  <rect x="0.5" y="0.5" width="479" height="359" rx="9.5" fill="none" stroke="#262626"/>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">
+  <defs>
+    <linearGradient id="gTF" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fde68a"/>
+      <stop offset="35%" stop-color="#f97316"/>
+      <stop offset="70%" stop-color="#7c2d12"/>
+      <stop offset="100%" stop-color="#1a1a1a"/>
+    </linearGradient>
+    <marker id="ahr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#f97316"/>
+    </marker>
+  </defs>
+  <rect width="480" height="360" rx="10" fill="#0d0d0d"/>
+  <path d="M10 0.5 h460 a9.5 9.5 0 0 1 9.5 9.5 v26 h-479 v-26 a9.5 9.5 0 0 1 9.5 -9.5 z" fill="#141414"/>
+  <line x1="0" y1="36" x2="480" y2="36" stroke="#1f1f1f"/>
+  <circle cx="22" cy="18" r="5" fill="#f87171"/>
+  <circle cx="42" cy="18" r="5" fill="#fbbf24"/>
+  <circle cx="62" cy="18" r="5" fill="#4ade80"/>
+  <text x="82" y="22.5" font-size="12.5" fill="#6b6b6b">$ volren head-8bit.raw</text>
+
+  <!-- scan rays (behind head) -->
+  <g stroke="#f97316" stroke-width="1.25" opacity="0.45">
+    <line x1="40" y1="130" x2="424" y2="130" stroke-dasharray="2 6" marker-end="url(#ahr)"/>
+    <line x1="40" y1="170" x2="424" y2="170" stroke-dasharray="2 6" marker-end="url(#ahr)"/>
+    <line x1="40" y1="210" x2="424" y2="210" stroke-dasharray="2 6" marker-end="url(#ahr)"/>
+    <line x1="40" y1="250" x2="424" y2="250" stroke-dasharray="2 6" marker-end="url(#ahr)"/>
+  </g>
+
+  <!-- head profile contour (facing left) -->
+  <path d="M315 110
+           C 290 78, 240 72, 210 92
+           C 196 102, 190 122, 192 140
+           C 193 152, 188 158, 184 170
+           L 172 192
+           C 170 196, 174 200, 180 200
+           C 178 208, 178 214, 184 216
+           C 180 222, 180 230, 188 232
+           C 184 240, 186 252, 198 256
+           C 210 272, 232 284, 258 286
+           C 290 288, 318 272, 330 240
+           C 344 200, 340 140, 315 110 Z"
+        fill="#22d3ee" fill-opacity="0.05" stroke="#22d3ee" stroke-width="2"/>
+  <ellipse cx="262" cy="160" rx="54" ry="42" fill="none" stroke="#22d3ee" stroke-opacity="0.3" stroke-width="1.25"/>
+  <ellipse cx="262" cy="160" rx="34" ry="26" fill="none" stroke="#22d3ee" stroke-opacity="0.16" stroke-width="1.25"/>
+
+  <!-- adaptive samples: sparse outside, dense inside -->
+  <g fill="#525252">
+    <circle cx="70" cy="130" r="1.5"/><circle cx="120" cy="130" r="1.5"/><circle cx="170" cy="130" r="1.5"/>
+    <circle cx="370" cy="130" r="1.5"/><circle cx="408" cy="130" r="1.5"/>
+    <circle cx="70" cy="170" r="1.5"/><circle cx="120" cy="170" r="1.5"/><circle cx="160" cy="170" r="1.5"/>
+    <circle cx="380" cy="170" r="1.5"/><circle cx="412" cy="170" r="1.5"/>
+    <circle cx="70" cy="210" r="1.5"/><circle cx="120" cy="210" r="1.5"/><circle cx="160" cy="210" r="1.5"/>
+    <circle cx="370" cy="210" r="1.5"/><circle cx="410" cy="210" r="1.5"/>
+    <circle cx="70" cy="250" r="1.5"/><circle cx="120" cy="250" r="1.5"/><circle cx="166" cy="250" r="1.5"/>
+    <circle cx="380" cy="250" r="1.5"/><circle cx="412" cy="250" r="1.5"/>
+  </g>
+  <g fill="#fbbf24">
+    <circle cx="212" cy="130" r="2"/><circle cx="230" cy="130" r="2"/><circle cx="248" cy="130" r="2"/><circle cx="266" cy="130" r="2"/><circle cx="284" cy="130" r="2"/><circle cx="302" cy="130" r="2"/><circle cx="320" cy="130" r="2"/>
+    <circle cx="192" cy="170" r="2"/><circle cx="210" cy="170" r="2"/><circle cx="228" cy="170" r="2"/><circle cx="246" cy="170" r="2"/><circle cx="264" cy="170" r="2"/><circle cx="282" cy="170" r="2"/><circle cx="300" cy="170" r="2"/><circle cx="318" cy="170" r="2"/><circle cx="336" cy="170" r="2"/>
+    <circle cx="190" cy="210" r="2"/><circle cx="208" cy="210" r="2"/><circle cx="226" cy="210" r="2"/><circle cx="244" cy="210" r="2"/><circle cx="262" cy="210" r="2"/><circle cx="280" cy="210" r="2"/><circle cx="298" cy="210" r="2"/><circle cx="316" cy="210" r="2"/><circle cx="334" cy="210" r="2"/>
+    <circle cx="204" cy="250" r="2"/><circle cx="222" cy="250" r="2"/><circle cx="240" cy="250" r="2"/><circle cx="258" cy="250" r="2"/><circle cx="276" cy="250" r="2"/><circle cx="294" cy="250" r="2"/><circle cx="312" cy="250" r="2"/><circle cx="328" cy="250" r="2"/>
+  </g>
+
+  <!-- transfer function bar -->
+  <rect x="446" y="110" width="10" height="150" fill="url(#gTF)" stroke="#2a2a2a"/>
+  <text x="451" y="98" font-size="12" fill="#737373" text-anchor="middle">τ</text>
+
+  <text x="240" y="326" font-size="12.5" fill="#737373" text-anchor="middle">256³ CT volume · adaptive simpson along each ray</text>
+
+  <rect x="0.5" y="0.5" width="479" height="359" rx="9.5" fill="none" stroke="#262626"/>
+</svg>
