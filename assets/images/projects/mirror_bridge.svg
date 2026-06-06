@@ -1,128 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 360" font-family="ui-monospace,'SF Mono',Menlo,Consolas,monospace">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#10182f"/>
-      <stop offset="50%" stop-color="#2e3f6e"/>
-      <stop offset="78%" stop-color="#7a5066"/>
-      <stop offset="100%" stop-color="#c2754f"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#171c30"/>
+      <stop offset="100%" stop-color="#0c0f1c"/>
     </linearGradient>
-    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1d2747"/>
-      <stop offset="100%" stop-color="#0c1226"/>
-    </linearGradient>
-    <radialGradient id="gCpp">
-      <stop offset="0%" stop-color="#66a9d8" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#66a9d8" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="gPy">
-      <stop offset="0%" stop-color="#5b9bd5" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#5b9bd5" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="gLua">
-      <stop offset="0%" stop-color="#9d9deb" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#9d9deb" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="gJs">
-      <stop offset="0%" stop-color="#F7DF1E" stop-opacity="0.26"/>
-      <stop offset="100%" stop-color="#F7DF1E" stop-opacity="0"/>
-    </radialGradient>
   </defs>
 
-  <rect width="480" height="252" fill="url(#sky)"/>
-  <rect y="252" width="480" height="108" fill="url(#water)"/>
+  <rect width="480" height="360" fill="url(#bg)"/>
 
-  <!-- stars -->
-  <g fill="#ffffff">
-    <circle cx="130" cy="24" r="1.3" opacity="0.5"/>
-    <circle cx="210" cy="18" r="1.5" opacity="0.6"/>
-    <circle cx="250" cy="40" r="1.1" opacity="0.35"/>
-    <circle cx="300" cy="22" r="1.4" opacity="0.5"/>
-    <circle cx="160" cy="52" r="1.0" opacity="0.3"/>
-    <circle cx="38"  cy="30" r="1.4" opacity="0.45"/>
-    <circle cx="450" cy="36" r="1.3" opacity="0.4"/>
-    <circle cx="322" cy="52" r="1.0" opacity="0.3"/>
-    <circle cx="118" cy="64" r="1.0" opacity="0.25"/>
-    <circle cx="16"  cy="120" r="1.1" opacity="0.3"/>
-    <circle cx="464" cy="150" r="1.0" opacity="0.25"/>
-    <circle cx="282" cy="12" r="1.2" opacity="0.4"/>
-    <circle cx="372" cy="16" r="1.1" opacity="0.35"/>
-    <circle cx="68"  cy="160" r="1.0" opacity="0.22"/>
-  </g>
+  <!-- the C++ you write -->
+  <text x="40" y="56" font-size="13" fill="#6272a4">// mesh.hpp</text>
+  <text x="40" y="88" font-size="17"><tspan fill="#ff79c6">struct</tspan><tspan fill="#f8f8f2"> Mesh {</tspan></text>
+  <text x="62" y="118" font-size="17"><tspan fill="#8be9fd">vec3</tspan><tspan fill="#f8f8f2"> </tspan><tspan fill="#50fa7b">centroid</tspan><tspan fill="#f8f8f2">();</tspan></text>
+  <text x="62" y="148" font-size="17"><tspan fill="#ff79c6">void</tspan><tspan fill="#f8f8f2"> </tspan><tspan fill="#50fa7b">fit</tspan><tspan fill="#f8f8f2">(</tspan><tspan fill="#8be9fd">float</tspan><tspan fill="#f8f8f2"> eps);</tspan></text>
+  <text x="40" y="178" font-size="17" fill="#f8f8f2">};</text>
 
-  <!-- water glints -->
-  <g stroke-linecap="round">
-    <line x1="60" y1="272" x2="150" y2="272" stroke="#c2754f" stroke-width="2.5" opacity="0.3"/>
-    <line x1="210" y1="288" x2="268" y2="288" stroke="#c2754f" stroke-width="2" opacity="0.22"/>
-    <line x1="320" y1="270" x2="402" y2="270" stroke="#5b9bd5" stroke-width="2" opacity="0.22"/>
-    <line x1="120" y1="310" x2="186" y2="310" stroke="#5b9bd5" stroke-width="2" opacity="0.16"/>
-    <line x1="280" y1="322" x2="352" y2="322" stroke="#c2754f" stroke-width="2" opacity="0.14"/>
-    <line x1="30" y1="338" x2="84" y2="338" stroke="#5b9bd5" stroke-width="2" opacity="0.12"/>
-  </g>
+  <!-- the one call that does everything -->
+  <rect x="32" y="226" width="226" height="34" rx="5" fill="#50fa7b" fill-opacity="0.08" stroke="#50fa7b" stroke-opacity="0.35"/>
+  <text x="44" y="249" font-size="17"><tspan fill="#50fa7b">bind_class</tspan><tspan fill="#f8f8f2">&lt;</tspan><tspan fill="#8be9fd">Mesh</tspan><tspan fill="#f8f8f2">&gt;(m);</tspan></text>
 
-  <!-- dotted binding routes: C++ across to py / lua / js -->
-  <g fill="none" stroke-width="2.5" stroke-linecap="round">
-    <path d="M104 78 Q 230 14 346 50" stroke="#5b9bd5" stroke-dasharray="0.5 8" opacity="0.9"/>
-    <path d="M106 88 Q 255 36 402 92" stroke="#9d9deb" stroke-dasharray="0.5 8" opacity="0.9"/>
-    <path d="M102 98 Q 235 66 350 132" stroke="#e8d44d" stroke-dasharray="0.5 8" opacity="0.9"/>
+  <!-- fan-out to the three runtimes -->
+  <g fill="none" stroke="#6272a4" stroke-width="1.5" opacity="0.55">
+    <path d="M260 240 C 282 240, 268 92, 290 92"/>
+    <path d="M260 243 C 278 243, 272 172, 290 172"/>
+    <path d="M260 246 C 276 246, 276 252, 290 252"/>
   </g>
-
-  <!-- suspension bridge silhouette -->
-  <g fill="#060a18">
-    <rect x="0" y="228" width="480" height="9"/>
-    <rect x="144" y="110" width="11" height="122"/>
-    <rect x="325" y="110" width="11" height="122"/>
-    <rect x="140" y="142" width="19" height="6"/>
-    <rect x="321" y="142" width="19" height="6"/>
-    <rect x="140" y="196" width="19" height="5"/>
-    <rect x="321" y="196" width="19" height="5"/>
-  </g>
-  <g fill="none" stroke="#060a18" stroke-width="4">
-    <path d="M0 150 Q 75 235 150 122"/>
-    <path d="M150 122 Q 240 232 330 122"/>
-    <path d="M330 122 Q 405 235 480 150"/>
-  </g>
-  <g stroke="#060a18" stroke-width="1.75">
-    <line x1="36" y1="179" x2="36" y2="228"/>
-    <line x1="72" y1="186" x2="72" y2="228"/>
-    <line x1="108" y1="170" x2="108" y2="228"/>
-    <line x1="174" y1="147" x2="174" y2="228"/>
-    <line x1="198" y1="165" x2="198" y2="228"/>
-    <line x1="222" y1="175" x2="222" y2="228"/>
-    <line x1="246" y1="177" x2="246" y2="228"/>
-    <line x1="270" y1="171" x2="270" y2="228"/>
-    <line x1="294" y1="157" x2="294" y2="228"/>
-    <line x1="318" y1="136" x2="318" y2="228"/>
-    <line x1="372" y1="170" x2="372" y2="228"/>
-    <line x1="408" y1="186" x2="408" y2="228"/>
-    <line x1="444" y1="179" x2="444" y2="228"/>
-  </g>
-
-  <!-- bridge reflected in the water -->
-  <g opacity="0.3">
-    <rect x="146" y="252" width="7" height="38" fill="#060a18"/>
-    <rect x="327" y="252" width="7" height="38" fill="#060a18"/>
-    <path d="M150 252 Q 240 292 330 252" fill="none" stroke="#060a18" stroke-width="3" stroke-dasharray="7 5"/>
-  </g>
-
-  <!-- C++ (official blue hexagon) -->
-  <ellipse cx="74" cy="84" rx="52" ry="46" fill="url(#gCpp)"/>
-  <polygon points="104,84 89,110 59,110 44,84 59,58 89,58" fill="#00599C" stroke="#66a9d8" stroke-width="1.5"/>
-  <polygon points="98,84 86,105 62,105 50,84 62,63 86,63" fill="none" stroke="#b8daf2" stroke-width="1" opacity="0.4"/>
-  <text x="74" y="90" font-size="16" font-weight="700" fill="#ffffff" text-anchor="middle">C++</text>
 
   <!-- python -->
-  <ellipse cx="368" cy="52" rx="42" ry="38" fill="url(#gPy)"/>
-  <circle cx="368" cy="52" r="21" fill="#3776AB" stroke="#5b9bd5" stroke-width="1.5"/>
-  <text x="368" y="57.5" font-size="14" font-weight="700" fill="#FFD43B" text-anchor="middle">py</text>
+  <circle cx="298" cy="91" r="5" fill="#3776AB"/>
+  <text x="310" y="78" font-size="11" fill="#5b9bd5">python</text>
+  <text x="310" y="97" font-size="15.5"><tspan fill="#5b9bd5">&gt;&gt;&gt;</tspan><tspan fill="#f8f8f2"> m.fit(1e-3)</tspan></text>
 
-  <!-- lua (navy disc + orbiting moon) -->
-  <ellipse cx="424" cy="96" rx="42" ry="38" fill="url(#gLua)"/>
-  <circle cx="424" cy="96" r="21" fill="#1b1b7a" stroke="#6b6bd6" stroke-width="1.5"/>
-  <circle cx="434" cy="86" r="4.5" fill="#ffffff"/>
-  <text x="421" y="101" font-size="11.5" font-weight="700" fill="#ffffff" text-anchor="middle">lua</text>
+  <!-- lua -->
+  <circle cx="298" cy="171" r="5" fill="#6b6bd6"/>
+  <text x="310" y="158" font-size="11" fill="#8a8ae6">lua</text>
+  <text x="310" y="177" font-size="15.5"><tspan fill="#8a8ae6">&gt;</tspan><tspan fill="#f8f8f2"> m:fit(1e-3)</tspan></text>
 
-  <!-- js (yellow square, bottom-right glyph) -->
-  <ellipse cx="373" cy="139" rx="44" ry="40" fill="url(#gJs)"/>
-  <rect x="352" y="118" width="42" height="42" rx="4" fill="#F7DF1E"/>
-  <text x="386" y="152" font-size="15" font-weight="700" fill="#1a1a1a" text-anchor="end">JS</text>
+  <!-- javascript -->
+  <circle cx="298" cy="251" r="5" fill="#F7DF1E"/>
+  <text x="310" y="238" font-size="11" fill="#e8d44d">node</text>
+  <text x="310" y="257" font-size="15.5"><tspan fill="#e8d44d">&gt;</tspan><tspan fill="#f8f8f2"> m.fit(1e-3)</tspan></text>
+
+  <!-- compile-time, no glue -->
+  <text x="40" y="322" font-size="13" fill="#6272a4">// zero glue code — P2996 reflection fills in the rest</text>
 </svg>

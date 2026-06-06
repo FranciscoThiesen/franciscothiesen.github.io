@@ -12,17 +12,17 @@ permalink: /projects/
 <p class="section-lede">Making compile-time reflection do real work — bindings, serialization, hashing — before it ships in a standard compiler.</p>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_bridge" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_bridge.svg" alt="mirror_bridge — a suspension bridge carrying C++ across to Python, Lua and JavaScript" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_bridge" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_bridge.svg" alt="mirror_bridge — one C++ class and a single bind_class call, invoked from Python, Lua and Node" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/mirror_bridge">mirror_bridge</a>: One <code>bind_class&lt;T&gt;()</code> call and C++26 reflection generates the entire Python, Lua, and JavaScript binding — no boilerplate, 3–5× faster dispatch than pybind11. Porting Open3D's point-cloud pipeline replaced 25,262 hand-written binding lines with 71. <a class="plink" href="{{ site.baseurl }}/Mirror-Bridge/">writeup</a> <a class="plink" href="{{ site.baseurl }}/Mirror-Bridge-Open3D-71-Lines/">open3d port</a> <a class="plink" href="{{ site.baseurl }}/Mirror-Bridge-Multi-Language/">benchmarks</a></p>
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/simdjson_reflection_paper" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/simdjson_reflection.svg" alt="simdjson reflection — JSON braces split by a lightning bolt" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/simdjson_reflection_paper" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/simdjson_reflection.svg" alt="simdjson reflection — paper figure: parsing throughput bar chart, ours at 7.8 GB/s vs serde and yyjson" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/simdjson_reflection_paper">simdjson × reflection</a>: Compile-time reflection meets simdjson: JSON ⇄ native C++ structs at 3.5–7.8 GB/s with zero per-type code, 2–3× faster than yyjson and Rust's serde. Paper co-authored with Daniel Lemire. <a class="plink" href="{{ site.baseurl }}/Reflection-Based-Serialization/">writeup</a></p>
 </div>
 
 <div class="project">
-  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_hash" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_hash.svg" alt="mirror_hash — a fingerprint dissolving into hash bits" width="480" height="360"></a>
+  <a class="thumb" href="https://github.com/FranciscoThiesen/mirror_hash" aria-hidden="true" tabindex="-1"><img src="{{ site.baseurl }}/assets/images/projects/mirror_hash.svg" alt="mirror_hash — avalanche matrix of bit flips with the digest readout" width="480" height="360"></a>
   <p class="desc"><a class="pname" href="https://github.com/FranciscoThiesen/mirror_hash">mirror_hash</a>: <code>std::hash</code> specializations generated from reflection instead of written by hand — a trivially-copyable struct hashes in under 2 ns, and the whole thing passes SMHasher. The byte-hashing core uses ARM64 AES instructions to beat rapidhash by up to 147% on 64 B–8 KB keys. <a class="plink" href="{{ site.baseurl }}/Mirror-Hash/">writeup</a></p>
 </div>
 
