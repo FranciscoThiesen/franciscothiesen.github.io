@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "CPU Thanksgiving"
+title: "Compute has a turkey problem"
 tags: [Modern C++, Python, Bindings, Reflection, C++26, Performance, Cloud]
 ---
 
@@ -62,6 +62,8 @@ Interpreted languages in the hot path, a hundred-fold overhead,
 whatever: the hardware will absorb it. It was even the rational
 call for some scenarios. Engineer time was the scarce input. CPU
 time was not.
+
+## CPU Thanksgiving
 
 In The Black Swan, [Taleb tells the story of a turkey][taleb] that
 is fed every day for a thousand days. Plot its well-being and you
